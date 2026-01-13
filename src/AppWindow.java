@@ -25,22 +25,27 @@ public class AppWindow extends JFrame {
         this.setLayout(null);
         this.getContentPane().setBackground(Color.white);
 
+        //Urls
+        String urlsprung="src/Media/Bilder/icon.png";//Testbild
+        String urloriginal="src/Media/Bilder/penguin.png";
 
         // Bild laden
-        ImageIcon originalIconpenguin = new ImageIcon("src/Media/Bilder/penguin.png");
+        ImageIcon originalIconpenguin = new ImageIcon(urloriginal);
+        ImageIcon JumpingIconpenguin = new ImageIcon(urlsprung);
         ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree.png");
 
         //Icon
         this.setIconImage(originalIconpenguin.getImage());
 
         // Bild skalieren (z.B. auf 50x50 Pixel)
+        Image scaledImagejump = JumpingIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         Image scaledImagepenguin = originalIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon penguin = new ImageIcon(scaledImagepenguin);
 
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
 
-        // Bi  ld in ein Label setzen
+        // Bild in ein Label setzen
         charakter = new JLabel(penguin);
 
         hinderniss = new JLabel(tree);
@@ -74,6 +79,9 @@ public class AppWindow extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250 ) {
 
                     yVelocity = -20; // Kraftvoller Sprung nach oben
+                    penguin.setImage(scaledImagejump);//nicht fertig
+
+
                     try {
                         Thread.sleep(500);//Delay um nicht direkt wieder springen zu können
                     } catch (InterruptedException s) {
@@ -105,6 +113,7 @@ public class AppWindow extends JFrame {
         if (yPos >= 250) {      //>250, da Koordinatensystem in swing anders ist. Y verläuft nach unten. Oben links ist (0|0)
             yPos = 250;
             yVelocity = 0;
+
         }
 
         // Label neu positionieren
