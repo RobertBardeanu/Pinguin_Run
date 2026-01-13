@@ -17,4 +17,6 @@ new  Fenster();
         ImageIcon icon = new ImageIcon("src\\Media\\Bilder\\Icon.png");
         fenster.setIconImage(icon.getImage());
     }
+
+    //hallo
 }
