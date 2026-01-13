@@ -27,9 +27,9 @@ public class AppWindow extends JFrame {
 
 
         // Bild laden
-        ImageIcon originalIconpenguin = new ImageIcon("penguin.png");
+        ImageIcon originalIconpenguin = new ImageIcon("/Bilder/penguin.png");
 
-        ImageIcon originalIcontree = new ImageIcon("tree.png");
+        ImageIcon originalIcontree = new ImageIcon("/Bilder/tree.png");
 
 
 
