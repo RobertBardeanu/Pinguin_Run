@@ -16,7 +16,7 @@ public class AppWindow extends JFrame {
 
 
 
-    AppWindow() {
+    AppWindow()  {
 
         //Window intialisieren
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,10 +28,10 @@ public class AppWindow extends JFrame {
 
         // Bild laden
         ImageIcon originalIconpenguin = new ImageIcon("src/Media/Bilder/penguin.png");
-
         ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree.png");
 
-
+        //Icon
+        this.setIconImage(originalIconpenguin.getImage());
 
         // Bild skalieren (z.B. auf 50x50 Pixel)
         Image scaledImagepenguin = originalIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -40,7 +40,7 @@ public class AppWindow extends JFrame {
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
 
-        // Bild in ein Label setzen
+        // Bi  ld in ein Label setzen
         charakter = new JLabel(penguin);
 
         hinderniss = new JLabel(tree);
@@ -56,6 +56,7 @@ public class AppWindow extends JFrame {
 
         //timer für animation
 
+
         Timer timer = new Timer(5, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,9 +70,20 @@ public class AppWindow extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250) {
+
+                if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250 ) {
+
                     yVelocity = -20; // Kraftvoller Sprung nach oben
+                    try {
+                        Thread.sleep(500);//Delay um nicht direkt wieder springen zu können
+                    } catch (InterruptedException s) {
+                        System.out.println("Etwas ging schief");
+                    }
+
+
                 }
+
+
             }
         });
 
