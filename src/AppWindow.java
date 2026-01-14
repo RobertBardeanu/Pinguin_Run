@@ -11,6 +11,9 @@ public class AppWindow extends JFrame {
     //variablen
     JLabel charakter;
     JLabel hinderniss;
+    JLabel hintergrund;
+    JLabel groundlabel;
+
     int yPos = 250; // Startposition (Y-Achse)
     int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
     final int GRAVITY = 1;
@@ -24,23 +27,26 @@ public class AppWindow extends JFrame {
 
         //Window intialisieren
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("SuperDino");
+        this.setTitle("Pinguin Run");
         this.setSize(1000, 500);
         this.setLayout(null);
         this.getContentPane().setBackground(Color.white);
+        this.setResizable(false);
 
 
         //Urls
         String urlsprung="src/Media/Bilder/icon.png";//Testbild
-        String urloriginal="src/Media/Bilder/penguin-ohnehintergrund.png";
-        String urlHintergrund="src/Media/Bilder/Free-Mountain-Backgrounds-Pixel-Art3-1536x1024.png";
-
+        String urloriginal="src/Media/Bilder/penguin-ohnehintergrund.png";//Hintergrund von craftpix.net
+        String urlHintergrund="src/Media/Bilder/BG_02.png";
+        String urlGround="src/Media/Bilder/Ground_01.png";
+        String urlTree="src/Media/Bilder/tree-ohnehintergrund.png";
 
         // Bild laden
         ImageIcon originalIconpenguin = new ImageIcon(urloriginal);
         ImageIcon JumpingIconpenguin = new ImageIcon(urlsprung);
-        ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree.png");
+        ImageIcon originalIcontree = new ImageIcon(urlTree);
         ImageIcon Hintergrund = new ImageIcon(urlHintergrund);
+        ImageIcon originalGround = new ImageIcon(urlGround);
 
 
         //Icon
@@ -56,18 +62,32 @@ public class AppWindow extends JFrame {
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
 
+        Image scaledImageHintergrund = Hintergrund.getImage().getScaledInstance(1000, 600, Image.SCALE_SMOOTH);
+        ImageIcon hintergrundimage = new ImageIcon(scaledImageHintergrund);
+
+        Image scaledImageGround = originalGround.getImage().getScaledInstance(1000, -200, Image.SCALE_SMOOTH);
+        ImageIcon ground=new ImageIcon(scaledImageGround);
+
         // Bild in ein Label setzen
         charakter = new JLabel(penguin);
 
         hinderniss = new JLabel(tree);
 
+        hintergrund=new JLabel(hintergrundimage);
+
+        groundlabel=new JLabel(ground);
 
         charakter.setBounds(100, yPos, 200, 200);
         hinderniss.setBounds(treeX, yPos, 200, treeh);
+        hintergrund.setBounds(0, -100, getWidth(),getHeight());
+        groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
         // Label ins Fenster hinzufügen
         this.add(charakter);
         this.add(hinderniss);
+        this.add(groundlabel);
+
+        this.add(hintergrund);
 
 
         //timer für animation
@@ -126,7 +146,6 @@ public class AppWindow extends JFrame {
     }
     private void updateTree() {
         treeX -= treeSpeed; // Baum bewegt sich nach links
-        treeh -= rand.nextInt(1,200);
 
         // Wenn der Baum links aus dem Bild ist
         if (treeX < -200) {
