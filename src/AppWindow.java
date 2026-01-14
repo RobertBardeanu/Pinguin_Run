@@ -11,7 +11,7 @@ public class AppWindow extends JFrame {
 
 
 
-    //Sprites: Tobias
+    //Sprites: Tobias //vllt echt auch mit nem extra Thread
     //Objekte: Robert
     //Kollision; Maik
     //Punkte:
@@ -219,8 +219,6 @@ public class AppWindow extends JFrame {
     public static void main(String[] args) {
         //windows abrufen
         AppWindow window = new AppWindow();
-
-
 
     }
 
