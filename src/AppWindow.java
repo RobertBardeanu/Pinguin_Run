@@ -8,6 +8,27 @@ import java.util.Random;
 
 public class AppWindow extends JFrame {
 
+
+
+
+    //Sprites: Tobias
+    //Objekte: Robert
+    //Kollision; Maik
+    //Punkte:
+    //Menü:
+    //Hintergrund: Maik pixeln
+    //Highscore:
+    //Beleidigungen wenn man verkackt;
+    //Sounds:
+    //Tests:
+    //Javadoc:
+
+
+    //Optional
+    //Powerups:
+    //Methoden in extra Klasse, Code aufräumen
+
+
     //variablen
     JLabel charakter;
     JLabel hinderniss;
@@ -176,8 +197,15 @@ public class AppWindow extends JFrame {
 
 
         //Animation abspielen
+
+
+        //Tobias
+
+
+
         if(yPos == 250 ) {
-            charakter.imageUpdate("")
+
+
         }
     }
 
