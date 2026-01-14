@@ -10,7 +10,6 @@ public class AppWindow extends JFrame {
 
     //variablen
     JLabel charakter;
-    JLabel charakter2;
     JLabel hinderniss;
     JLabel hintergrund;
     JLabel groundlabel;
@@ -58,8 +57,6 @@ public class AppWindow extends JFrame {
 
         // Bild skalieren (z.B. auf 50x50 Pixel)
         Image scaledImagejump = JumpingIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon penguingif2 = new ImageIcon(scaledImagejump);
-
         Image scaledImagepenguin = originalIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon penguin = new ImageIcon(scaledImagepenguin);
 
@@ -73,10 +70,7 @@ public class AppWindow extends JFrame {
         ImageIcon ground=new ImageIcon(scaledImageGround);
 
         // Bild in ein Label setzen
-
         charakter = new JLabel(penguin);
-
-        charakter2 = new JLabel(penguingif2);
 
         hinderniss = new JLabel(tree);
 
@@ -183,8 +177,7 @@ public class AppWindow extends JFrame {
 
         //Animation abspielen
         if(yPos == 250 ) {
-            charakter.setVisible(false);
-            this.add(charakter2);
+            charakter.imageUpdate("")
         }
     }
 
