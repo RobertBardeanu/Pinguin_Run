@@ -93,15 +93,22 @@ public class AppWindow extends JFrame {
         //timer für animation
 
 
-        Timer timer = new Timer(5, new ActionListener() {
+        Timer timer = new Timer(20, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 updatePhysics() ;
-                updateTree();
             }
         });
         timer.start();
+        Timer timer2 = new Timer(5, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                updateTree();
+            }
+        });
+        timer2.start();
 
 
         //Springen mit keylistener | Leerzeichen
@@ -114,21 +121,7 @@ public class AppWindow extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250 ) {
 
                     yVelocity = -20; // Kraftvoller Sprung nach oben
-                    //IDEE FÜR SPRUNG DELAY UND ANIMATION(FUNKTIONIRT NICHT GUT)
-                   // if (sprung)
-                       // penguin.setImage(scaledImagejump);//nicht fertig :(...
-                 // try {
-                   //     Thread.sleep(500);//Delay um nicht direkt wieder springen zu können
-                    //  } catch (InterruptedException s) {
-                       // System.out.println("Etwas ging schief");
-                   // }
 
-                   // }
-                    //else{
-                    //   sprung = false;
-                    //  penguin.setImage(scaledImagepenguin);//nicht fertig
-
-                    // }
 
                 }
 
@@ -152,7 +145,7 @@ public class AppWindow extends JFrame {
             treeX = getWidth(); // rechts neu starten
         }
 
-        hinderniss.setLocation(treeX, 250);
+        hinderniss.setLocation(treeX, 260);
     }
     //Physik Methode fürs Springen
 
