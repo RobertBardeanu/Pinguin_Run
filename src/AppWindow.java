@@ -10,15 +10,17 @@ public class AppWindow extends JFrame {
 
     //variablen
     JLabel charakter;
+    JLabel charakter2;
     JLabel hinderniss;
     JLabel hintergrund;
     JLabel groundlabel;
 
     int yPos = 250; // Startposition (Y-Achse)
     int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
-    final int GRAVITY = 1;
+    final int GRAVITY = 80;
+    final int JUMP_FORCE = -15000;
     int treeX = 1000;      // Startposition rechts außerhalb des Fensters
-    int treeSpeed = 1;     // Geschwindigkeit des Baums
+    int treeSpeed = 300;     // Geschwindigkeit des Baums
     Random rand = new Random();
     int treeh=rand.nextInt(100,200);
 
@@ -35,7 +37,7 @@ public class AppWindow extends JFrame {
 
 
         //Urls
-        String urlsprung="src/Media/Bilder/icon.png";//Testbild
+        String urlsprung="src/Media/Bilder/pinguingif2.png";//Testbild
         String urloriginal="src/Media/Bilder/penguin-ohnehintergrund.png";//Hintergrund von craftpix.net
         String urlHintergrund="src/Media/Bilder/BG_02.png";
         String urlGround="src/Media/Bilder/Ground_01.png";
@@ -56,6 +58,8 @@ public class AppWindow extends JFrame {
 
         // Bild skalieren (z.B. auf 50x50 Pixel)
         Image scaledImagejump = JumpingIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon penguingif2 = new ImageIcon(scaledImagejump);
+
         Image scaledImagepenguin = originalIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon penguin = new ImageIcon(scaledImagepenguin);
 
@@ -69,7 +73,10 @@ public class AppWindow extends JFrame {
         ImageIcon ground=new ImageIcon(scaledImageGround);
 
         // Bild in ein Label setzen
+
         charakter = new JLabel(penguin);
+
+        charakter2 = new JLabel(penguingif2);
 
         hinderniss = new JLabel(tree);
 
@@ -93,22 +100,27 @@ public class AppWindow extends JFrame {
         //timer für animation
 
 
-        Timer timer = new Timer(20, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                updatePhysics() ;
-            }
-        });
-        timer.start();
-        Timer timer2 = new Timer(5, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                updateTree();
-            }
-        });
-        timer2.start();
+
+
+
+//        Timer timer = new Timer(20, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//                updatePhysics() ;
+//            }
+//        });
+//        timer.start();
+//        Timer timer2 = new Timer(2, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//                updateTree();
+//            }
+//        });
+//        timer2.start();
 
 
         //Springen mit keylistener | Leerzeichen
@@ -120,8 +132,8 @@ public class AppWindow extends JFrame {
 
                 if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250 ) {
 
-                    yVelocity = -20; // Kraftvoller Sprung nach oben
-
+                    yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
+                    System.out.println("yVel: " + yVelocity);
 
                 }
 
@@ -130,6 +142,8 @@ public class AppWindow extends JFrame {
             }
         });
 
+        GameLoop loop = new GameLoop(this);
+        loop.start();
 
         // Pinguin und alles erst ganz am Ende sichtbar machen um java anzeigefehler zu meiden
         this.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
@@ -137,8 +151,9 @@ public class AppWindow extends JFrame {
 
 
     }
-    private void updateTree() {
-        treeX -= treeSpeed; // Baum bewegt sich nach links
+    private void updateTree(final double deltaTime) {
+        final int treeVel = (int)Math.round(treeSpeed * deltaTime);
+        treeX -= treeVel <= 0 ? 1 : treeVel; // Baum bewegt sich nach links
 
         // Wenn der Baum links aus dem Bild ist
         if (treeX < -200) {
@@ -149,9 +164,11 @@ public class AppWindow extends JFrame {
     }
     //Physik Methode fürs Springen
 
-    private void updatePhysics() {
+    private void updatePhysics(final double deltaTime) {
+
+        //Sprung
         yVelocity += GRAVITY; // Schwerkraft wirkt ständig
-        yPos += yVelocity;    // Position ändern
+        yPos += (int)Math.round(yVelocity * deltaTime);    // Position ändern
 
         // Boden-Kollision (damit er nicht aus dem Bild fällt)
         if (yPos >= 250) {      //>250, da Koordinatensystem in swing anders ist. Y verläuft nach unten. Oben links ist (0|0)
@@ -162,6 +179,19 @@ public class AppWindow extends JFrame {
 
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
+
+
+        //Animation abspielen
+        if(yPos == 250 ) {
+            charakter.setVisible(false);
+            this.add(charakter2);
+        }
+    }
+
+    public void updateAll(final double deltaTime)
+    {
+        updatePhysics(deltaTime);
+        updateTree(deltaTime);
     }
 
 
