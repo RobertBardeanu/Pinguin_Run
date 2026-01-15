@@ -175,7 +175,7 @@ public class AppWindow extends JFrame {
             treeX = getWidth(); // rechts neu starten
         }
 
-        hinderniss.setLocation(treeX, 260);
+        hinderniss.setLocation(treeX, 250);
     }
     //Physik Methode fürs Springen
 
