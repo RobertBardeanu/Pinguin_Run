@@ -56,34 +56,32 @@ public class AppWindow extends JFrame {
         this.getContentPane().setBackground(Color.white);
         this.setResizable(false);
 
-
-        //Urls
-        String urlsprung="src/Media/Bilder/pinguingif2.png";//Testbild
-        String urloriginal="src/Media/Bilder/penguin-ohnehintergrund.png";//Hintergrund von craftpix.net
-        String urlHintergrund="src/Media/Bilder/BG_02.png";
-        String urlGround="src/Media/Bilder/Ground_01.png";
-        String urlTree="src/Media/Bilder/tree-ohnehintergrund.png";
-        String urlRobbe="src/Media/Bilder/Robbe.png";
-
         // Bild laden
-        ImageIcon originalIconpenguin = new ImageIcon(urloriginal);
-        ImageIcon JumpingIconpenguin = new ImageIcon(urlsprung);
-        ImageIcon originalIcontree = new ImageIcon(urlTree);
-        ImageIcon Hintergrund = new ImageIcon(urlHintergrund);
-        ImageIcon originalGround = new ImageIcon(urlGround);
-        ImageIcon originalRobbe = new ImageIcon(urlRobbe);
+        ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
+        ImageIcon originalPenguinJumpStartEnd = new ImageIcon("src/Media/Bilder/pinguin.jump-removebg-preview.png");
+        ImageIcon originalPenguinJumpPeak = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
+
+        ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree-ohnehintergrund.png");
+        ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/BG_02.png"); //Hintergrund von craftpix.net
+        ImageIcon originalGround = new ImageIcon("src/Media/Bilder/Ground_01.png");
+        ImageIcon originalRobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
 
 
         //Icon
-        this.setIconImage(originalIconpenguin.getImage());
+        this.setIconImage(originalPenguinOnGround.getImage());
 
 
 
         // Bild skalieren (z.B. auf 50x50 Pixel)
-        Image scaledImagejump = JumpingIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 
-        Image scaledImagepenguin = originalIconpenguin.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon penguin = new ImageIcon(scaledImagepenguin);
+        Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon penguinOnGround = new ImageIcon(scaledImagePenguinOnGround);
+
+        Image scaledImagePenguinJumpStartEnd = originalPenguinJumpStartEnd.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon penguinJumpStartEnd = new ImageIcon(scaledImagePenguinJumpStartEnd);
+
+        Image scaledImagePenguinJumpPeak = originalPenguinJumpPeak.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon penguinJumpPeak = new ImageIcon(scaledImagePenguinJumpPeak);
 
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
@@ -98,7 +96,7 @@ public class AppWindow extends JFrame {
         ImageIcon Robbe=new ImageIcon(scaledImageRobbe);
 
         // Bild in ein Label setzen
-        charakter = new JLabel(penguin);
+        charakter = new JLabel(penguinOnGround);
 
         hinderniss = new JLabel();
 
