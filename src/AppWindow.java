@@ -28,23 +28,29 @@ public class AppWindow extends JFrame {
 
 
     //variablen
-    JLabel charakter;
-    JLabel hinderniss;
-    JLabel Robbenhinderniss;
-    JLabel Baumhinderniss;
-    JLabel hintergrund;
-    JLabel groundlabel;
+    private JLabel charakter;
+    private JLabel hinderniss;
+    private JLabel robbenHinderniss;
+    private JLabel baumHinderniss;
+    private JLabel hintergrund;
+    private JLabel groundlabel;
 
-    int yPos = 250; // Startposition (Y-Achse)
-    int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
-    final int GRAVITY = 80;
-    final int JUMP_FORCE = -15000;
-    int treeX = 1000;
-    int robbeX= 1000; // Startposition rechts außerhalb des Fensters
-    int treeSpeed = 300;     // Geschwindigkeit des Baums
-    Random rand = new Random();
-    int treeh=rand.nextInt(100,200);
-    boolean GameOver;
+    private final int GROUND_Y = 250;
+
+    private int yPos = GROUND_Y; // Startposition (Y-Achse)
+    private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
+    private final int GRAVITY = 80;
+    private final int JUMP_FORCE = -15000;
+
+    private int treeX = 1000;
+    private int robbeX= 1000; // Startposition rechts außerhalb des Fensters
+    private int treeSpeed = 300;     // Geschwindigkeit des Baums
+    private Random rand = new Random();
+    private int treeh=rand.nextInt(100,200);
+    private boolean GameOver;
+
+    private Jump_States currentJumpState = Jump_States.ON_GROUND;
+
 
     AppWindow()  {
 
@@ -104,18 +110,18 @@ public class AppWindow extends JFrame {
 
         groundlabel=new JLabel(ground);
 
-        Robbenhinderniss =new JLabel(Robbe);
-        Baumhinderniss =new JLabel(tree);
+        robbenHinderniss =new JLabel(Robbe);
+        baumHinderniss =new JLabel(tree);
 
         charakter.setBounds(100, yPos, 200, 200);
         hinderniss.setBounds(treeX, yPos, 200, 200);
-        Robbenhinderniss.setBounds(treeX+10, yPos, 200, 200);
+        robbenHinderniss.setBounds(treeX+10, yPos, 200, 200);
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
         // Label ins Fenster hinzufügen
         this.add(charakter);
-        this.add(Robbenhinderniss);
+        this.add(robbenHinderniss);
         this.add(hinderniss);
 
         this.add(groundlabel);
@@ -154,56 +160,45 @@ public class AppWindow extends JFrame {
                 boolean sprung = true;
 
 
-                if (e.getKeyCode() == KeyEvent.VK_SPACE && yPos >= 250 ) {
+                if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
 
                     yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
                     System.out.println("yVel: " + yVelocity);
 
                 }
-
-
-
             }
         });
 
         GameLoop loop = new GameLoop(this);
         loop.start();
 
-        // Pinguin und alles erst ganz am Ende sichtbar machen um java anzeigefehler zu meiden
+        // Pinguin und alles erst ganz am Ende sichtbar machen, um java anzeigefehler zu meiden
         this.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
         this.setVisible(true);
-
-
     }
-    private void updateTree(final double deltaTime) {
-        final int treeVel = (int)Math.round(treeSpeed * deltaTime);
-        treeX -= treeVel <= 0 ? 1 : treeVel; // Baum bewegt sich nach links
-        Random rand = new Random();
-        int zufallshinderniss=0;
 
+    private void updateObstacle(final double deltaTime) {
+        final int treeVel = (int)Math.round(treeSpeed * deltaTime);
+        treeX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
+        Random rand = new Random();
 
         if (treeX < -200) {
             treeX = getWidth();
-            // rechts neu starten
-            zufallshinderniss = rand.nextInt(1,3);
-            System.out.println("Hinderniss: " +zufallshinderniss);
 
+            switch (rand.nextInt(1, 3)) {
+                case 1:
+                    hinderniss.setIcon((robbenHinderniss.getIcon()));
+                    break;
+                case 2:
+                    hinderniss.setIcon(baumHinderniss.getIcon());
+                    break;
+                default:
+                    break;
+            }
         }
 
-        if (zufallshinderniss == 1) {       //Robbe
-
-            hinderniss.setIcon(Robbenhinderniss.getIcon());
-        }
-        else if (zufallshinderniss == 2) {     //Baum
-
-            hinderniss.setIcon(Baumhinderniss.getIcon());
-        }
-        // Wenn der Baum links aus dem Bild ist
-
-
-
-        hinderniss.setLocation(treeX, 250);
-        Robbenhinderniss.setLocation(robbeX, 250);
+        hinderniss.setLocation(treeX, GROUND_Y);
+        robbenHinderniss.setLocation(robbeX, GROUND_Y);
 
     }
     //Physik Methode fürs Springen
@@ -215,33 +210,19 @@ public class AppWindow extends JFrame {
         yPos += (int)Math.round(yVelocity * deltaTime);    // Position ändern
 
         // Boden-Kollision (damit er nicht aus dem Bild fällt)
-        if (yPos >= 250) {      //>250, da Koordinatensystem in swing anders ist. Y verläuft nach unten. Oben links ist (0|0)
-            yPos = 250;
+        if (yPos >= GROUND_Y) {      //>250, da Koordinatensystem in swing anders ist. Y verläuft nach unten. Oben links ist (0|0)
+            yPos = GROUND_Y;
             yVelocity = 0;
-
         }
 
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
-
-
-        //Animation abspielen
-
-
-        //Tobias Sprites
-
-
-
-        if(yPos == 250 ) {
-
-
-        }
     }
 
     public void updateAll(final double deltaTime)
     {
         updatePhysics(deltaTime);
-        updateTree(deltaTime);
+        updateObstacle(deltaTime);
     }
 
 
