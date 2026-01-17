@@ -45,11 +45,12 @@ public class AppWindow extends JFrame {
     private int treeX = 1000;
     private int robbeX= 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 300;     // Geschwindigkeit des Baums
-    private Random rand = new Random();
-    private int treeh=rand.nextInt(100,200);
+    private Random random = new Random();
+    private int treeh= random.nextInt(100,200);
     private boolean GameOver;
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
+
 
 
     AppWindow()  {
@@ -127,6 +128,9 @@ public class AppWindow extends JFrame {
         this.add(groundlabel);
 
         this.add(hintergrund);
+
+        // Erstes Hindernis festlegen
+        hinderniss.setIcon(getRandomObstacleIcon());
         //timer für animation
 
 
@@ -180,29 +184,25 @@ public class AppWindow extends JFrame {
     private void updateObstacle(final double deltaTime) {
         final int treeVel = (int)Math.round(treeSpeed * deltaTime);
         treeX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
-        Random rand = new Random();
+
+        hinderniss.setLocation(treeX, GROUND_Y);
 
         if (treeX < -200) {
             treeX = getWidth();
 
-            switch (rand.nextInt(1, 3)) {
-                case 1:
-                    hinderniss.setIcon((robbenHinderniss.getIcon()));
-                    break;
-                case 2:
-                    hinderniss.setIcon(baumHinderniss.getIcon());
-                    break;
-                default:
-                    break;
-            }
+            hinderniss.setIcon(getRandomObstacleIcon());
         }
-
-        hinderniss.setLocation(treeX, GROUND_Y);
-        robbenHinderniss.setLocation(robbeX, GROUND_Y);
-
     }
-    //Physik Methode fürs Springen
 
+    private Icon getRandomObstacleIcon() {
+        return switch (random.nextInt(1, 3)) {
+            case 1 -> robbenHinderniss.getIcon();
+            case 2 -> baumHinderniss.getIcon();
+            default -> null;
+        };
+    }
+
+    //Physik Methode fürs Springen
     private void updatePhysics(final double deltaTime) {
 
         //Sprung
