@@ -35,6 +35,10 @@ public class AppWindow extends JFrame {
     private JLabel hintergrund;
     private JLabel groundlabel;
 
+    private ImageIcon penguinOnGround;
+    private ImageIcon penguinJumpStartEnd;
+    private ImageIcon penguinJumpPeak;
+
     private final int GROUND_Y = 250;
 
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
@@ -42,14 +46,14 @@ public class AppWindow extends JFrame {
     private final int GRAVITY = 80;
     private final int JUMP_FORCE = -15000;
 
-    private int treeX = 1000;
-    private int robbeX= 1000; // Startposition rechts außerhalb des Fensters
+    private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 300;     // Geschwindigkeit des Baums
     private Random random = new Random();
     private int treeh= random.nextInt(100,200);
     private boolean GameOver;
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
+    private final int MAX_JUMP_HEIGHT = 400;
 
 
 
@@ -82,13 +86,13 @@ public class AppWindow extends JFrame {
         // Bild skalieren (z.B. auf 50x50 Pixel)
 
         Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon penguinOnGround = new ImageIcon(scaledImagePenguinOnGround);
+        penguinOnGround = new ImageIcon(scaledImagePenguinOnGround);
 
         Image scaledImagePenguinJumpStartEnd = originalPenguinJumpStartEnd.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon penguinJumpStartEnd = new ImageIcon(scaledImagePenguinJumpStartEnd);
+        penguinJumpStartEnd = new ImageIcon(scaledImagePenguinJumpStartEnd);
 
         Image scaledImagePenguinJumpPeak = originalPenguinJumpPeak.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon penguinJumpPeak = new ImageIcon(scaledImagePenguinJumpPeak);
+        penguinJumpPeak = new ImageIcon(scaledImagePenguinJumpPeak);
 
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
@@ -115,8 +119,8 @@ public class AppWindow extends JFrame {
         baumHinderniss =new JLabel(tree);
 
         charakter.setBounds(100, yPos, 200, 200);
-        hinderniss.setBounds(treeX, yPos, 200, 200);
-        robbenHinderniss.setBounds(treeX+10, yPos, 200, 200);
+        hinderniss.setBounds(obstacleX, yPos, 200, 200);
+        robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
@@ -131,31 +135,6 @@ public class AppWindow extends JFrame {
 
         // Erstes Hindernis festlegen
         hinderniss.setIcon(getRandomObstacleIcon());
-        //timer für animation
-
-
-
-
-
-
-
-//        Timer timer = new Timer(20, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                updatePhysics() ;
-//            }
-//        });
-//        timer.start();
-//        Timer timer2 = new Timer(2, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                updateTree();
-//            }
-//        });
-//        timer2.start();
-
 
         //Springen mit keylistener | Leerzeichen
         this.addKeyListener(new KeyAdapter() {
@@ -183,12 +162,12 @@ public class AppWindow extends JFrame {
 
     private void updateObstacle(final double deltaTime) {
         final int treeVel = (int)Math.round(treeSpeed * deltaTime);
-        treeX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
+        obstacleX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
 
-        hinderniss.setLocation(treeX, GROUND_Y);
+        hinderniss.setLocation(obstacleX, GROUND_Y);
 
-        if (treeX < -200) {
-            treeX = getWidth();
+        if (obstacleX < -200) {
+            obstacleX = getWidth();
 
             hinderniss.setIcon(getRandomObstacleIcon());
         }
@@ -215,8 +194,37 @@ public class AppWindow extends JFrame {
             yVelocity = 0;
         }
 
+        Jump_States newState;
+
+        if (yPos >= GROUND_Y) {
+            newState = Jump_States.ON_GROUND;
+        }
+        else {
+            int heightAboveGround = GROUND_Y - yPos;
+
+            if (heightAboveGround < 190) {
+                newState = Jump_States.JUMP_START_END;
+            }
+            else {
+                newState = Jump_States.JUMP_PEAK;
+            }
+        }
+
+        if (newState != currentJumpState) {
+            currentJumpState = newState;
+            updateSprite();
+        }
+
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
+    }
+
+    private void updateSprite() {
+        switch (currentJumpState) {
+            case ON_GROUND -> charakter.setIcon(penguinOnGround);
+            case JUMP_START_END -> charakter.setIcon(penguinJumpStartEnd);
+            case JUMP_PEAK -> charakter.setIcon(penguinJumpPeak);
+        }
     }
 
     public void updateAll(final double deltaTime)
