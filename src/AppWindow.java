@@ -12,7 +12,7 @@ public class AppWindow extends JFrame {
     //Sprites: Tobias //vllt echt auch mit nem extra Thread
     //Objekte: Robert
     //Kollision; Maik
-    //Punkte:
+    //Punkte: Maik
     //Menü:
     //Hintergrund: Maik pixeln
     //Highscore:
@@ -30,8 +30,8 @@ public class AppWindow extends JFrame {
     //variablen
     JLabel charakter;
     JLabel hinderniss;
-    JLabel hinderniss2;
-    JLabel hinderniss3;
+    JLabel Robbenhinderniss;
+    JLabel Baumhinderniss;
     JLabel hintergrund;
     JLabel groundlabel;
 
@@ -39,7 +39,8 @@ public class AppWindow extends JFrame {
     int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
     final int GRAVITY = 80;
     final int JUMP_FORCE = -15000;
-    int treeX = 1000;      // Startposition rechts außerhalb des Fensters
+    int treeX = 1000;
+    int robbeX= 1000; // Startposition rechts außerhalb des Fensters
     int treeSpeed = 300;     // Geschwindigkeit des Baums
     Random rand = new Random();
     int treeh=rand.nextInt(100,200);
@@ -88,24 +89,24 @@ public class AppWindow extends JFrame {
         // Bild in ein Label setzen
         charakter = new JLabel(penguin);
 
-        hinderniss = new JLabel(tree);
+        hinderniss = new JLabel();
 
         hintergrund=new JLabel(hintergrundimage);
 
         groundlabel=new JLabel(ground);
 
-        hinderniss2=new JLabel(Robbe);
-        hinderniss3=new JLabel();
+        Robbenhinderniss =new JLabel(Robbe);
+        Baumhinderniss =new JLabel(tree);
 
         charakter.setBounds(100, yPos, 200, 200);
-        hinderniss.setBounds(treeX, yPos, 200, treeh);
-        hinderniss2.setBounds(treeX+10, yPos, 200, treeh);
+        hinderniss.setBounds(treeX, yPos, 200, 200);
+        Robbenhinderniss.setBounds(treeX+10, yPos, 200, 200);
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
         // Label ins Fenster hinzufügen
         this.add(charakter);
-        this.add(hinderniss2);
+        this.add(Robbenhinderniss);
         this.add(hinderniss);
 
         this.add(groundlabel);
@@ -170,24 +171,31 @@ public class AppWindow extends JFrame {
         treeX -= treeVel <= 0 ? 1 : treeVel; // Baum bewegt sich nach links
         Random rand = new Random();
         int zufallshinderniss=0;
-        if (zufallshinderniss == 1) {
-            hinderniss3.setIcon(hinderniss.getIcon());
-            hinderniss.setIcon(hinderniss2.getIcon());
-        }
-        else if (zufallshinderniss == 2) {
-            hinderniss.setIcon(hinderniss3.getIcon());
-        }
-        // Wenn der Baum links aus dem Bild ist
+
+
         if (treeX < -200) {
             treeX = getWidth();
-                // rechts neu starten
+            // rechts neu starten
             zufallshinderniss = rand.nextInt(1,3);
             System.out.println("Hinderniss: " +zufallshinderniss);
+
         }
+
+        if (zufallshinderniss == 1) {       //Robbe
+
+            hinderniss.setIcon(Robbenhinderniss.getIcon());
+        }
+        else if (zufallshinderniss == 2) {     //Baum
+
+            hinderniss.setIcon(Baumhinderniss.getIcon());
+        }
+        // Wenn der Baum links aus dem Bild ist
+
 
 
         hinderniss.setLocation(treeX, 250);
-        int robbex=treeX+getWidth();
+        Robbenhinderniss.setLocation(robbeX, 250);
+
     }
     //Physik Methode fürs Springen
 
@@ -211,7 +219,7 @@ public class AppWindow extends JFrame {
         //Animation abspielen
 
 
-        //Tobias
+        //Tobias Sprites
 
 
 
