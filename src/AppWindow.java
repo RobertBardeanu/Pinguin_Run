@@ -36,8 +36,7 @@ public class AppWindow extends JFrame {
     private JLabel groundlabel;
 
     private ImageIcon penguinOnGround;
-    private ImageIcon penguinJumpStartEnd;
-    private ImageIcon penguinJumpPeak;
+    private ImageIcon penguinJump;
 
     private final int GROUND_Y = 250;
 
@@ -69,8 +68,7 @@ public class AppWindow extends JFrame {
 
         // Bild laden
         ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
-        ImageIcon originalPenguinJumpStartEnd = new ImageIcon("src/Media/Bilder/pinguin.jump-removebg-preview.png");
-        ImageIcon originalPenguinJumpPeak = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
+        ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
 
         ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree-ohnehintergrund.png");
         ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/BG_02.png"); //Hintergrund von craftpix.net
@@ -88,11 +86,8 @@ public class AppWindow extends JFrame {
         Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         penguinOnGround = new ImageIcon(scaledImagePenguinOnGround);
 
-        Image scaledImagePenguinJumpStartEnd = originalPenguinJumpStartEnd.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        penguinJumpStartEnd = new ImageIcon(scaledImagePenguinJumpStartEnd);
-
-        Image scaledImagePenguinJumpPeak = originalPenguinJumpPeak.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        penguinJumpPeak = new ImageIcon(scaledImagePenguinJumpPeak);
+        Image scaledImagePenguinJump = originalPenguinJump.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        penguinJump = new ImageIcon(scaledImagePenguinJump);
 
         Image scaledImagetree = originalIcontree.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon tree = new ImageIcon(scaledImagetree);
@@ -200,14 +195,7 @@ public class AppWindow extends JFrame {
             newState = Jump_States.ON_GROUND;
         }
         else {
-            int heightAboveGround = GROUND_Y - yPos;
-
-            if (heightAboveGround < 190) {
-                newState = Jump_States.JUMP_START_END;
-            }
-            else {
-                newState = Jump_States.JUMP_PEAK;
-            }
+            newState = Jump_States.JUMP;
         }
 
         if (newState != currentJumpState) {
@@ -222,8 +210,7 @@ public class AppWindow extends JFrame {
     private void updateSprite() {
         switch (currentJumpState) {
             case ON_GROUND -> charakter.setIcon(penguinOnGround);
-            case JUMP_START_END -> charakter.setIcon(penguinJumpStartEnd);
-            case JUMP_PEAK -> charakter.setIcon(penguinJumpPeak);
+            case JUMP -> charakter.setIcon(penguinJump);
         }
     }
 
