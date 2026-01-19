@@ -195,10 +195,10 @@ this.add(hintergrund);
         BACKGROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
 
         hintergrund.setLocation( BACKGROUND_X, 0);
-        hintergrund2.setLocation( BACKGROUND_X +1000,0);
-        hintergrund3.setLocation( BACKGROUND_X -1000,0);
+        hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
+        hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
 
-        if (BACKGROUND_X < -1000) {
+        if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
         }
     }
