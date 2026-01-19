@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Random;
-import java.util.Scanner;
 
 public class AppWindow extends JFrame {
 
@@ -243,28 +242,20 @@ this.add(hintergrund);
     }
     private void musik()throws Exception{
         File file=new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
-        try(AudioInputStream audioStream= AudioSystem.getAudioInputStream(file))
-        {
+        AudioInputStream audioStream= AudioSystem.getAudioInputStream(file);
             Clip clip=AudioSystem.getClip();
             clip.open(audioStream);
 
             if (!GameOver){
-
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
-
             }
+
+
             else {
+
                 clip.stop();
             }
-
-
-
-        }
-        catch (FileNotFoundException e){
-            System.out.println("File not found");
-        }
-
-
     }
 
     private void updateSprite() {
