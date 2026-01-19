@@ -1,8 +1,14 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class AppWindow extends JFrame {
 
@@ -129,7 +135,12 @@ public class AppWindow extends JFrame {
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
         // Label ins Fenster hinzufügen
-        this.add(charakter);
+
+        try {
+            musik();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }        this.add(charakter);
         this.add(robbenHinderniss);
 
         this.add(hinderniss);
@@ -229,6 +240,31 @@ this.add(hintergrund);
 
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
+    }
+    private void musik()throws Exception{
+        File file=new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
+        try(AudioInputStream audioStream= AudioSystem.getAudioInputStream(file))
+        {
+            Clip clip=AudioSystem.getClip();
+            clip.open(audioStream);
+
+            if (!GameOver){
+
+                clip.start();
+
+            }
+            else {
+                clip.stop();
+            }
+
+
+
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found");
+        }
+
+
     }
 
     private void updateSprite() {
