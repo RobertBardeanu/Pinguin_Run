@@ -33,6 +33,8 @@ public class AppWindow extends JFrame {
     private JLabel robbenHinderniss;
     private JLabel baumHinderniss;
     private JLabel hintergrund;
+    private JLabel hintergrund2,hintergrund3;
+
     private JLabel groundlabel;
 
     private ImageIcon penguinOnGround;
@@ -40,6 +42,8 @@ public class AppWindow extends JFrame {
     private ImageIcon penguinJumpPeak;
 
     private final int GROUND_Y = 250;
+    private final int BACKGROUND_Y=0;
+    private int BACKGROUND_X=0;
 
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
     private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
@@ -49,8 +53,8 @@ public class AppWindow extends JFrame {
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 300;     // Geschwindigkeit des Baums
     private Random random = new Random();
-    private int treeh= random.nextInt(100,200);
     private boolean GameOver;
+
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
     private final int MAX_JUMP_HEIGHT = 400;
@@ -112,6 +116,8 @@ public class AppWindow extends JFrame {
         hinderniss = new JLabel();
 
         hintergrund=new JLabel(hintergrundimage);
+        hintergrund2=new JLabel(hintergrundimage);
+        hintergrund3=new JLabel(hintergrundimage);
 
         groundlabel=new JLabel(ground);
 
@@ -122,16 +128,21 @@ public class AppWindow extends JFrame {
         hinderniss.setBounds(obstacleX, yPos, 200, 200);
         robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
+        hintergrund3.setBounds(0, -100, getWidth(),getHeight());
+        hintergrund2.setBounds(0, -100, getWidth(),getHeight());
+
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
         // Label ins Fenster hinzufügen
         this.add(charakter);
         this.add(robbenHinderniss);
+
         this.add(hinderniss);
 
         this.add(groundlabel);
-
-        this.add(hintergrund);
+this.add(hintergrund2);
+this.add(hintergrund);
+        this.add(hintergrund3);
 
         // Erstes Hindernis festlegen
         hinderniss.setIcon(getRandomObstacleIcon());
@@ -160,16 +171,29 @@ public class AppWindow extends JFrame {
         this.setVisible(true);
     }
 
+
     private void updateObstacle(final double deltaTime) {
         final int treeVel = (int)Math.round(treeSpeed * deltaTime);
         obstacleX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
 
-        hinderniss.setLocation(obstacleX, GROUND_Y);
+        hinderniss.setLocation( obstacleX, GROUND_Y);
 
         if (obstacleX < -200) {
             obstacleX = getWidth();
 
             hinderniss.setIcon(getRandomObstacleIcon());
+        }
+    }
+    private void updateBackground(final double deltaTime) {
+        final int speed = (int)Math.round(100 * deltaTime);
+        BACKGROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
+
+        hintergrund.setLocation( BACKGROUND_X, 0);
+        hintergrund2.setLocation( BACKGROUND_X +1000,0);
+        hintergrund3.setLocation( BACKGROUND_X -1000,0);
+
+        if (BACKGROUND_X < -1000) {
+            BACKGROUND_X = getWidth();
         }
     }
 
@@ -231,7 +255,9 @@ public class AppWindow extends JFrame {
     {
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
+        updateBackground(deltaTime);
     }
+
 
 
     public static void main(String[] args) {
