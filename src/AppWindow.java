@@ -58,7 +58,7 @@ public class AppWindow extends JFrame {
     private final int JUMP_FORCE = -15000;
 
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
-    private int treeSpeed = 300;     // Geschwindigkeit des Baums
+    private int treeSpeed = 400;     // Geschwindigkeit des Baums
     private Random random = new Random();
     private boolean GameOver = false;
     BackgroundMusic musikPlayer = new BackgroundMusic();
@@ -223,9 +223,11 @@ public class AppWindow extends JFrame {
 
         if (obstacleX < -200) {
             obstacleX = getWidth();
-
             hinderniss.setIcon(getRandomObstacleIcon());
+            score();
         }
+
+
     }
 
 
@@ -243,7 +245,6 @@ public class AppWindow extends JFrame {
 
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
-            score();
 
         }
     }
@@ -272,10 +273,15 @@ public class AppWindow extends JFrame {
         //hitboxen verkleinern geht iwie mit grow
         // -h, -v zieht an jeder seite soviele pixel ab quasi
 
-        pinguinRect.grow(-35, -20);
-        hindernisRect.grow(-20, -10);
+        pinguinRect.grow(-70, -65);
+        hindernisRect.grow(-70, -90);
         return pinguinRect.intersects(hindernisRect);
     }
+
+
+
+
+
 
     //Physik Methode fürs Springen
     private void updatePhysics(final double deltaTime) {
@@ -311,6 +317,9 @@ public class AppWindow extends JFrame {
         charakter.setLocation(charakter.getX(), yPos);
 
 
+
+
+
     }
 
 
@@ -342,10 +351,13 @@ public class AppWindow extends JFrame {
 
 
 
+
+
     public static void main(String[] args) {
         //windows abrufen
         AppWindow window = new AppWindow();
 
     }
+
 
 }
