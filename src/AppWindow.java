@@ -361,6 +361,8 @@ public class AppWindow extends JFrame {
 
     }
 
+    //hitbox maler von chati
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
