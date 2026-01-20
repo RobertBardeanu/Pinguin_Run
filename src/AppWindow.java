@@ -60,7 +60,8 @@ public class AppWindow extends JFrame {
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 300;     // Geschwindigkeit des Baums
     private Random random = new Random();
-    private boolean GameOver;
+    private boolean GameOver = false;
+    BackgroundMusic musikPlayer = new BackgroundMusic();
 
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
@@ -77,6 +78,10 @@ public class AppWindow extends JFrame {
         this.setLayout(null);
         this.getContentPane().setBackground(Color.white);
         this.setResizable(false);
+
+        //Musik initialisieren
+
+        musikPlayer.starteMusik();
 
         // Bild laden
         ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
@@ -148,19 +153,16 @@ public class AppWindow extends JFrame {
 
 
         // Label ins Fenster hinzufügen
-        try {
-            musik();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }        this.add(charakter);
+        this.add(charakter);
+
         this.add(Score);
         this.add(robbenHinderniss);
 
         this.add(hinderniss);
 
         this.add(groundlabel);
-this.add(hintergrund2);
-this.add(hintergrund);
+        this.add(hintergrund2);
+        this.add(hintergrund);
         this.add(hintergrund3);
 
 
@@ -191,6 +193,18 @@ this.add(hintergrund);
         this.setVisible(true);
     }
 
+    private void gameOver(){
+        GameOver = true;
+        System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
+        musikPlayer.stoppeMusik();
+
+
+        Score.setText("Game Over :(");
+        Score.revalidate();
+        Dimension d=Score.getPreferredSize();
+        Score.setBounds(0, 0, d.width,d.height);
+
+    }
 
     private void updateObstacle(final double deltaTime) {
         final int treeVel = (int)Math.round(treeSpeed * deltaTime);
@@ -235,6 +249,19 @@ this.add(hintergrund);
         Score.setBounds(0, 0, d.width,d.height);
     }
 
+    //Kollision
+    private boolean checkCollision(){
+        Rectangle pinguinRect = charakter.getBounds();
+        Rectangle hindernisRect = hinderniss.getBounds();
+
+        //hitboxen verkleinern geht iwie mit grow
+        // -h, -v zieht an jeder seite soviele pixel ab quasi
+
+        pinguinRect.grow(-35, -20);
+        hindernisRect.grow(-20, -10);
+        return pinguinRect.intersects(hindernisRect);
+    }
+
     //Physik Methode fürs Springen
     private void updatePhysics(final double deltaTime) {
 
@@ -252,10 +279,11 @@ this.add(hintergrund);
 
         if (yPos >= GROUND_Y) {
             newState = Jump_States.ON_GROUND;
+            score();
         }
         else {
             newState = Jump_States.JUMP;
-            score();
+
 
 
         }
@@ -272,23 +300,6 @@ this.add(hintergrund);
     }
 
 
-    private void musik()throws Exception{
-        File file=new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
-        AudioInputStream audioStream= AudioSystem.getAudioInputStream(file);
-            Clip clip=AudioSystem.getClip();
-            clip.open(audioStream);
-
-            if (!GameOver){
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-                clip.start();
-            }
-
-
-            else {
-
-                clip.stop();
-            }
-    }
 
     private void updateSprite() {
         switch (currentJumpState) {
@@ -297,11 +308,22 @@ this.add(hintergrund);
         }
     }
 
+
+
     public void updateAll(final double deltaTime)
     {
+
+        if (GameOver) {
+            return;
+        }
+
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
         updateBackground(deltaTime);
+
+        if(checkCollision()){
+            gameOver();
+        }
     }
 
 
