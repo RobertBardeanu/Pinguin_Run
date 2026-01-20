@@ -33,6 +33,8 @@ public class AppWindow extends JFrame {
 
 
     //variablen
+    private int   punkte=0;
+    private JLabel Score;
     private JLabel charakter;
     private JLabel hinderniss;
     private JLabel robbenHinderniss;
@@ -89,7 +91,6 @@ public class AppWindow extends JFrame {
         this.setIconImage(originalPenguinOnGround.getImage());
 
 
-
         // Bild skalieren (z.B. auf 50x50 Pixel)
 
         Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -120,6 +121,13 @@ public class AppWindow extends JFrame {
         hintergrund3=new JLabel(hintergrundimage);
 
         groundlabel=new JLabel(ground);
+        Score=new JLabel("");
+
+        Dimension d=Score.getPreferredSize();
+        Score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
+        Score.setForeground(Color.red);
+
+
 
         robbenHinderniss =new JLabel(Robbe);
         baumHinderniss =new JLabel(tree);
@@ -130,16 +138,17 @@ public class AppWindow extends JFrame {
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         hintergrund3.setBounds(0, -100, getWidth(),getHeight());
         hintergrund2.setBounds(0, -100, getWidth(),getHeight());
-
+        Score.setBounds(0, 0, 100,20);
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
 
-        // Label ins Fenster hinzufügen
 
+        // Label ins Fenster hinzufügen
         try {
             musik();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }        this.add(charakter);
+        this.add(Score);
         this.add(robbenHinderniss);
 
         this.add(hinderniss);
@@ -148,6 +157,7 @@ public class AppWindow extends JFrame {
 this.add(hintergrund2);
 this.add(hintergrund);
         this.add(hintergrund3);
+
 
         // Erstes Hindernis festlegen
         hinderniss.setIcon(getRandomObstacleIcon());
@@ -189,6 +199,8 @@ this.add(hintergrund);
             hinderniss.setIcon(getRandomObstacleIcon());
         }
     }
+
+
     private void updateBackground(final double deltaTime) {
         final int speed = (int)Math.round(100 * deltaTime);
         BACKGROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
@@ -208,6 +220,13 @@ this.add(hintergrund);
             case 2 -> baumHinderniss.getIcon();
             default -> null;
         };
+    }
+    private void score(){
+        punkte+=10;
+        Score.setText("Score:"+String.valueOf(punkte));
+        Score.revalidate();
+        Dimension d=Score.getPreferredSize();
+        Score.setBounds(0, 0, d.width,d.height);
     }
 
     //Physik Methode fürs Springen
@@ -230,6 +249,9 @@ this.add(hintergrund);
         }
         else {
             newState = Jump_States.JUMP;
+            score();
+
+
         }
 
         if (newState != currentJumpState) {
@@ -239,6 +261,8 @@ this.add(hintergrund);
 
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
+
+
     }
     private void musik()throws Exception{
         File file=new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
