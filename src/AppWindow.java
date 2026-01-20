@@ -39,6 +39,7 @@ public class AppWindow extends JFrame {
     private JLabel hinderniss;
     private JLabel robbenHinderniss;
     private JLabel baumHinderniss;
+    private JLabel netzHinderniss;
     private JLabel hintergrund;
     private JLabel hintergrund2,hintergrund3;
 
@@ -84,8 +85,8 @@ public class AppWindow extends JFrame {
         ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree-ohnehintergrund.png");
         ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/BG_02.png"); //Hintergrund von craftpix.net
         ImageIcon originalGround = new ImageIcon("src/Media/Bilder/Ground_01.png");
-        ImageIcon originalRobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
-
+        ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
+        ImageIcon originalnetz = new ImageIcon("src/Media/Bilder/fischernetz.png");
 
         //Icon
         this.setIconImage(originalPenguinOnGround.getImage());
@@ -108,8 +109,11 @@ public class AppWindow extends JFrame {
         Image scaledImageGround = originalGround.getImage().getScaledInstance(1000, -200, Image.SCALE_SMOOTH);
         ImageIcon ground=new ImageIcon(scaledImageGround);
 
-        Image scaledImageRobbe = originalRobbe.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        Image scaledImageRobbe = originalrobbe.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon Robbe=new ImageIcon(scaledImageRobbe);
+
+        Image scaledImageNetz = originalnetz.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon Netz=new ImageIcon(scaledImageNetz);
 
         // Bild in ein Label setzen
         charakter = new JLabel(penguinOnGround);
@@ -131,6 +135,7 @@ public class AppWindow extends JFrame {
 
         robbenHinderniss =new JLabel(Robbe);
         baumHinderniss =new JLabel(tree);
+        netzHinderniss =new JLabel(Netz);
 
         charakter.setBounds(100, yPos, 200, 200);
         hinderniss.setBounds(obstacleX, yPos, 200, 200);
@@ -215,9 +220,10 @@ this.add(hintergrund);
     }
 
     private Icon getRandomObstacleIcon() {
-        return switch (random.nextInt(1, 3)) {
+        return switch (random.nextInt(1, 4)) {
             case 1 -> robbenHinderniss.getIcon();
             case 2 -> baumHinderniss.getIcon();
+            case 3 -> netzHinderniss.getIcon();
             default -> null;
         };
     }
@@ -264,6 +270,8 @@ this.add(hintergrund);
 
 
     }
+
+
     private void musik()throws Exception{
         File file=new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
         AudioInputStream audioStream= AudioSystem.getAudioInputStream(file);
