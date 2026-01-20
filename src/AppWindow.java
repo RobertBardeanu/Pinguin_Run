@@ -43,7 +43,7 @@ public class AppWindow extends JFrame {
     private JLabel hintergrund;
     private JLabel hintergrund2,hintergrund3;
 
-    private JLabel groundlabel;
+    private JLabel groundlabel,groundlabel2,groundlabel3;
 
     private ImageIcon penguinOnGround;
     private ImageIcon penguinJump;
@@ -130,6 +130,9 @@ public class AppWindow extends JFrame {
         hintergrund3=new JLabel(hintergrundimage);
 
         groundlabel=new JLabel(ground);
+        groundlabel2=new JLabel(ground);
+        groundlabel3=new JLabel(ground);
+
         Score=new JLabel("");
 
         Dimension d=Score.getPreferredSize();
@@ -150,6 +153,8 @@ public class AppWindow extends JFrame {
         hintergrund2.setBounds(0, -100, getWidth(),getHeight());
         Score.setBounds(0, 0, 100,20);
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel2.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
 
 
         // Label ins Fenster hinzufügen
@@ -161,9 +166,13 @@ public class AppWindow extends JFrame {
         this.add(hinderniss);
 
         this.add(groundlabel);
+        this.add(groundlabel2);
+        this.add(groundlabel3);
+
         this.add(hintergrund2);
         this.add(hintergrund);
         this.add(hintergrund3);
+        Score.setText("Score:"+0);
 
 
         // Erstes Hindernis festlegen
@@ -227,9 +236,15 @@ public class AppWindow extends JFrame {
         hintergrund.setLocation( BACKGROUND_X, 0);
         hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
         hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
+        groundlabel.setLocation( BACKGROUND_X ,-20);
+        groundlabel2.setLocation( BACKGROUND_X +getWidth(),-20);
+        groundlabel3.setLocation( BACKGROUND_X -getWidth(),-20);
+
 
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
+            score();
+
         }
     }
 
@@ -242,7 +257,7 @@ public class AppWindow extends JFrame {
         };
     }
     private void score(){
-        punkte+=10;
+        punkte+=random.nextInt(1,10);
         Score.setText("Score:"+String.valueOf(punkte));
         Score.revalidate();
         Dimension d=Score.getPreferredSize();
@@ -279,7 +294,6 @@ public class AppWindow extends JFrame {
 
         if (yPos >= GROUND_Y) {
             newState = Jump_States.ON_GROUND;
-            score();
         }
         else {
             newState = Jump_States.JUMP;
