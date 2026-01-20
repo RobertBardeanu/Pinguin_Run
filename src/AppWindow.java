@@ -33,20 +33,12 @@ public class AppWindow extends JFrame {
 
 
     //variablen
-    private int   punkte=0;
-    private JLabel Score;
-    private JLabel charakter;
-    private JLabel hinderniss;
-    private JLabel robbenHinderniss;
-    private JLabel baumHinderniss;
-    private JLabel netzHinderniss;
-    private JLabel hintergrund;
-    private JLabel hintergrund2,hintergrund3;
-
-    private JLabel groundlabel;
-
-    private ImageIcon penguinOnGround;
-    private ImageIcon penguinJump;
+    private int punkte=0;
+    private JLabel Score,charakter;
+    private JLabel hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
+    private JLabel hintergrund,hintergrund2,hintergrund3;
+    private JLabel groundlabel,groundlabel2,groundlabel3;
+    private ImageIcon penguinOnGround,penguinJump;
 
     private final int GROUND_Y = 250;
     private final int BACKGROUND_Y=0;
@@ -88,6 +80,7 @@ public class AppWindow extends JFrame {
         ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
         ImageIcon originalnetz = new ImageIcon("src/Media/Bilder/fischernetz.png");
 
+
         //Icon
         this.setIconImage(originalPenguinOnGround.getImage());
 
@@ -125,9 +118,11 @@ public class AppWindow extends JFrame {
         hintergrund3=new JLabel(hintergrundimage);
 
         groundlabel=new JLabel(ground);
-        Score=new JLabel("");
+        groundlabel2=new JLabel(ground);
+        groundlabel3=new JLabel(ground);
 
-        Dimension d=Score.getPreferredSize();
+        Score=new JLabel("Score:");
+
         Score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         Score.setForeground(Color.red);
 
@@ -136,7 +131,6 @@ public class AppWindow extends JFrame {
         robbenHinderniss =new JLabel(Robbe);
         baumHinderniss =new JLabel(tree);
         netzHinderniss =new JLabel(Netz);
-
         charakter.setBounds(100, yPos, 200, 200);
         hinderniss.setBounds(obstacleX, yPos, 200, 200);
         robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
@@ -145,6 +139,9 @@ public class AppWindow extends JFrame {
         hintergrund2.setBounds(0, -100, getWidth(),getHeight());
         Score.setBounds(0, 0, 100,20);
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel2.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
+
 
 
         // Label ins Fenster hinzufügen
@@ -159,8 +156,11 @@ public class AppWindow extends JFrame {
         this.add(hinderniss);
 
         this.add(groundlabel);
-this.add(hintergrund2);
-this.add(hintergrund);
+        this.add(groundlabel2);
+        this.add(groundlabel3);
+
+        this.add(hintergrund2);
+        this.add(hintergrund);
         this.add(hintergrund3);
 
 
@@ -200,6 +200,7 @@ this.add(hintergrund);
 
         if (obstacleX < -200) {
             obstacleX = getWidth();
+            score();
 
             hinderniss.setIcon(getRandomObstacleIcon());
         }
@@ -210,10 +211,12 @@ this.add(hintergrund);
         final int speed = (int)Math.round(100 * deltaTime);
         BACKGROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
 
-        hintergrund.setLocation( BACKGROUND_X, 0);
-        hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
-        hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
-
+       hintergrund.setLocation( BACKGROUND_X ,-20);
+        hintergrund2.setLocation( BACKGROUND_X +getWidth(),-20);
+        hintergrund3.setLocation( BACKGROUND_X -getWidth(),-20);
+        groundlabel.setLocation( BACKGROUND_X ,-20);
+        groundlabel2.setLocation( BACKGROUND_X +getWidth(),-20);
+        groundlabel3.setLocation( BACKGROUND_X -getWidth(),-20);
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
         }
@@ -228,9 +231,9 @@ this.add(hintergrund);
         };
     }
     private void score(){
-        punkte+=10;
+
+        punkte+=random.nextInt(1,10);
         Score.setText("Score:"+String.valueOf(punkte));
-        Score.revalidate();
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
     }
@@ -255,7 +258,6 @@ this.add(hintergrund);
         }
         else {
             newState = Jump_States.JUMP;
-            score();
 
 
         }
