@@ -48,7 +48,7 @@ public class AppWindow extends JFrame {
     private ImageIcon penguinOnGround;
     private ImageIcon penguinJump;
 
-    private final int GROUND_Y = 250;
+    private final int GROUND_Y = 300;
     private final int BACKGROUND_Y=0;
     private int BACKGROUND_X=0;
 
@@ -145,8 +145,8 @@ public class AppWindow extends JFrame {
         baumHinderniss =new JLabel(tree);
         netzHinderniss =new JLabel(Netz);
 
-        charakter.setBounds(100, yPos, 200, 200);
-        hinderniss.setBounds(obstacleX, yPos, 200, 200);
+        charakter.setBounds(100, yPos, 100, 100);
+        hinderniss.setBounds(obstacleX, yPos, 100, 100);
         robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         hintergrund3.setBounds(0, -100, getWidth(),getHeight());
@@ -273,8 +273,8 @@ public class AppWindow extends JFrame {
         //hitboxen verkleinern geht iwie mit grow
         // -h, -v zieht an jeder seite soviele pixel ab quasi
 
-        pinguinRect.grow(-70, -65);
-        hindernisRect.grow(-70, -90);
+        pinguinRect.grow(-15, -10);
+        hindernisRect.grow(-15, -10);
         return pinguinRect.intersects(hindernisRect);
     }
 
@@ -347,6 +347,8 @@ public class AppWindow extends JFrame {
         if(checkCollision()){
             gameOver();
         }
+
+        this.repaint();
     }
 
 
@@ -359,5 +361,23 @@ public class AppWindow extends JFrame {
 
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(3));
+
+        // Zeichne Pinguin-Box (Rot)
+        Rectangle p = charakter.getBounds();
+        p.grow(-15, -10);
+        g2.setColor(Color.RED);
+        g2.drawRect(p.x, p.y, p.width, p.height);
+
+        // Zeichne Hindernis-Box (Blau)
+        Rectangle h = hinderniss.getBounds();
+        h.grow(-15, -15);
+        g2.setColor(Color.BLUE);
+        g2.drawRect(h.x, h.y, h.width, h.height);
+    }
 
 }
