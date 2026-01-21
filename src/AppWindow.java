@@ -172,7 +172,6 @@ public class AppWindow extends JFrame {
         this.add(hintergrund2);
         this.add(hintergrund);
         this.add(hintergrund3);
-        Score.setText("Score:"+0);
 
 
         // Erstes Hindernis festlegen
@@ -258,9 +257,6 @@ public class AppWindow extends JFrame {
     }
     private void score(){
         int maxSpeed = 2000     ;
-        Score.setText("Score:"+String.valueOf(punkte));
-        Dimension d=Score.getPreferredSize();
-        Score.setBounds(0, 0, d.width,d.height);
         if(punkte>=10&treeSpeed < maxSpeed){
             treeSpeed = treeSpeed+10;
             System.out.println("treeSpeed: " + treeSpeed);
@@ -352,6 +348,10 @@ public class AppWindow extends JFrame {
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
         updateBackground(deltaTime);
+        Score.setText("Score:"+String.valueOf(punkte));
+        Dimension d=Score.getPreferredSize();
+        Score.setBounds(0, 0, d.width,d.height);
+
 
         if(checkCollision()){
             gameOver();
