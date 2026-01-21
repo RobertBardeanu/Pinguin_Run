@@ -45,7 +45,6 @@ public class AppWindow extends JFrame {
     final private ImageIcon penguinJump;
 
     private final int GROUND_Y = 300;
-    private final int BACKGROUND_Y=0;
     private int BACKGROUND_X=0;
 
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
