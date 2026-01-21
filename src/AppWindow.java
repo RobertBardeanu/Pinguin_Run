@@ -62,7 +62,8 @@ public class AppWindow extends JFrame {
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 500;     // Geschwindigkeit des Baums
     private Random random = new Random();
-    private boolean GameOver = false;
+    private boolean GameOver = false,Paused = false;
+
     BackgroundMusic musikPlayer = new BackgroundMusic();
 
 
@@ -352,6 +353,9 @@ public class AppWindow extends JFrame {
     {
 
         if (GameOver) {
+            return;
+        }
+        if (Paused){
             return;
         }
 
