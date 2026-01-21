@@ -43,7 +43,8 @@ public class AppWindow extends JFrame {
     final private ImageIcon penguinOnGround,penguinJump;
 
     private final int GROUND_Y = 300;
-    private int BACKGROUND_X=0;
+    private int BACKGROUND_X = 0;
+    private int GROUND_X = 0;
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
     private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
     private final int GRAVITY = 80;
@@ -273,14 +274,22 @@ public class AppWindow extends JFrame {
         hintergrund.setLocation( BACKGROUND_X, 0);
         hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
         hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
-        groundlabel.setLocation( BACKGROUND_X ,-20);
-        groundlabel2.setLocation( BACKGROUND_X +getWidth(),-20);
-        groundlabel3.setLocation( BACKGROUND_X -getWidth(),-20);
-
 
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
+        }
+    }
 
+    private void updateGround(final double deltaTime) {
+        final int speed = (int)Math.round(obstacleSpeed * deltaTime);
+        GROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
+
+        groundlabel.setLocation( GROUND_X ,-20);
+        groundlabel2.setLocation( GROUND_X +getWidth(),-20);
+        groundlabel3.setLocation( GROUND_X -getWidth(),-20);
+
+        if (GROUND_X < -getWidth()) {
+            GROUND_X = getWidth();
         }
     }
 
@@ -387,6 +396,7 @@ public class AppWindow extends JFrame {
 
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
+        updateGround(deltaTime);
         updateBackground(deltaTime);
 
         score.setText("Score: " + punkte);
