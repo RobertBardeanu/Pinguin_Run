@@ -46,6 +46,7 @@ public class AppWindow extends JFrame {
 
     private final int GROUND_Y = 300;
     private int BACKGROUND_X=0;
+    private int GROUND_X = 0;
 
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
     private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
@@ -225,10 +226,7 @@ public class AppWindow extends JFrame {
             hinderniss.setIcon(getRandomObstacleIcon());
             score();
         }
-
-
     }
-
 
     private void updateBackground(final double deltaTime) {
         final int speed = (int)Math.round(100 * deltaTime);
@@ -237,14 +235,22 @@ public class AppWindow extends JFrame {
         hintergrund.setLocation( BACKGROUND_X, 0);
         hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
         hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
-        groundlabel.setLocation( BACKGROUND_X ,-20);
-        groundlabel2.setLocation( BACKGROUND_X +getWidth(),-20);
-        groundlabel3.setLocation( BACKGROUND_X -getWidth(),-20);
-
 
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
+        }
+    }
 
+    private void updateGround(final double deltaTime) {
+        final int speed = (int)Math.round(treeSpeed * deltaTime);
+        GROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
+
+        groundlabel.setLocation( GROUND_X ,-20);
+        groundlabel2.setLocation( GROUND_X +getWidth(),-20);
+        groundlabel3.setLocation( GROUND_X -getWidth(),-20);
+
+        if (GROUND_X < -getWidth()) {
+            GROUND_X = getWidth();
         }
     }
 
@@ -352,6 +358,7 @@ public class AppWindow extends JFrame {
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
         updateBackground(deltaTime);
+        updateGround(deltaTime);
         Score.setText("Score:"+punkte);
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
