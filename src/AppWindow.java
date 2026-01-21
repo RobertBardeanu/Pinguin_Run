@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
@@ -29,31 +31,26 @@ public class AppWindow extends JFrame {
 
     //variablen
     private int   punkte=0;
-    private JLabel Score;
-    private JLabel charakter;
-    private JLabel hinderniss;
-    private JLabel robbenHinderniss;
-    private JLabel baumHinderniss;
-    private JLabel netzHinderniss;
-    private JLabel hintergrund;
-    private JLabel hintergrund2,hintergrund3;
+    private JLabel score;
+
+    private JLabel charakter,hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
+    private JLabel hintergrund,hintergrund2,hintergrund3;
+
     private JButton resetbutton;
 
     final private JLabel groundlabel,groundlabel2,groundlabel3;
 
-    final ImageIcon penguinOnGround;
-    final private ImageIcon penguinJump;
+    final private ImageIcon penguinOnGround,penguinJump;
 
     private final int GROUND_Y = 300;
     private int BACKGROUND_X=0;
-
     private int yPos = GROUND_Y; // Startposition (Y-Achse)
     private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
     private final int GRAVITY = 80;
     private final int JUMP_FORCE = -15000;
 
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
-    private int treeSpeed = 500;     // Geschwindigkeit des Baums
+    private int obstacleSpeed = 500;     // Geschwindigkeit des Baums
     final private Random random = new Random();
     private boolean GameOver = false,Paused = false;
 
@@ -78,7 +75,12 @@ public class AppWindow extends JFrame {
 
         musikPlayer.starteMusik();
 
-        // Bild laden
+
+
+
+
+
+                // Bild laden
         ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
         ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
 
@@ -128,12 +130,43 @@ public class AppWindow extends JFrame {
         groundlabel2=new JLabel(ground);
         groundlabel3=new JLabel(ground);
 
-        Score=new JLabel("");
-        resetbutton=new JButton("Reset");
+        score = new JLabel("");
+        score.setVerticalAlignment(JLabel.CENTER);
 
-        Score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
-        Score.setForeground(Color.red);
-        resetbutton.setBackground(Color.red);
+        //Resetbutton
+        resetbutton=new JButton("Reset");
+        resetbutton.addActionListener(new  ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                punkte = 0;
+                obstacleX = 1000;
+                obstacleSpeed = 500;
+                yPos = GROUND_Y;
+                yVelocity = 0;
+                GameOver = false;
+
+                // 2. UI-Elemente zurücksetzen
+                score.setText("Score: 0");
+                charakter.setLocation(100, GROUND_Y);
+                hinderniss.setLocation(obstacleX, GROUND_Y);
+                resetbutton.setVisible(false);
+
+                // 3. Musik neu starten (falls gewünscht)
+                musikPlayer.starteMusik();
+
+                // Fokus zurück auf das Fenster (wichtig für KeyListener!)
+                AppWindow.this.requestFocusInWindow();
+
+            }
+        });
+
+
+        score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
+        score.setForeground(Color.decode("#F5EADD"));
+
+
+        resetbutton.setBackground(Color.green);
         resetbutton.setFont(new Font(Font.DIALOG,Font.BOLD,20));
 
 
@@ -148,19 +181,21 @@ public class AppWindow extends JFrame {
         hintergrund.setBounds(0, -100, getWidth(),getHeight());
         hintergrund3.setBounds(0, -100, getWidth(),getHeight());
         hintergrund2.setBounds(0, -100, getWidth(),getHeight());
-        Score.setBounds(0, 0, 100,20);
+
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
         groundlabel2.setBounds(0, -20, getWidth(),getHeight());
         resetbutton.setBounds(450, 200,100,100);
-            groundlabel3.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
         resetbutton.setVisible(false);
 
         // Label ins Fenster hinzufügen
         this.add(resetbutton);
 
+
+
         this.add(charakter);
 
-        this.add(Score);
+        this.add(score);
         this.add(robbenHinderniss);
 
         this.add(hinderniss);
@@ -193,6 +228,8 @@ public class AppWindow extends JFrame {
             }
         });
 
+
+
         GameLoop loop = new GameLoop(this);
         loop.start();
 
@@ -207,15 +244,14 @@ public class AppWindow extends JFrame {
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
 
-        Score.setText("Game Over :(");
-        Dimension d=Score.getPreferredSize();
-        Score.setBounds(0, 0, d.width,d.height);
-
+        score.setText("Game Over :(");
+        Dimension d= score.getPreferredSize();
+        score.setBounds(0, 0, d.width,d.height);
 
     }
 
     private void updateObstacle(final double deltaTime) {
-        final int treeVel = (int)Math.round(treeSpeed * deltaTime);
+        final int treeVel = (int)Math.round(obstacleSpeed * deltaTime);
         obstacleX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
 
         hinderniss.setLocation( obstacleX, GROUND_Y);
@@ -258,12 +294,12 @@ public class AppWindow extends JFrame {
     }
     private void score(){
         int maxSpeed = 2000     ;
-        if(punkte>=10&&treeSpeed < maxSpeed)
+        if(punkte>=10&& obstacleSpeed < maxSpeed)
         {
-            treeSpeed = treeSpeed+10;
-            System.out.println("treeSpeed: " + treeSpeed);
+            obstacleSpeed = obstacleSpeed +10;
+            System.out.println("treeSpeed: " + obstacleSpeed);
         }
-        if(treeSpeed>=1000){
+        if(obstacleSpeed >=1000){
             punkte+=random.nextInt(10,100);
         }
         else{
@@ -322,11 +358,9 @@ public class AppWindow extends JFrame {
         // Label neu positionieren
         charakter.setLocation(charakter.getX(), yPos);
 
-
-
-
-
     }
+
+
 
 
 
@@ -336,6 +370,8 @@ public class AppWindow extends JFrame {
             case JUMP -> charakter.setIcon(penguinJump);
         }
     }
+
+
 
 
         //
@@ -352,9 +388,11 @@ public class AppWindow extends JFrame {
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
         updateBackground(deltaTime);
-        Score.setText("Score:"+punkte);
-        Dimension d=Score.getPreferredSize();
-        Score.setBounds(0, 0, d.width,d.height);
+
+        score.setText("Score: " + punkte);
+        Dimension d= score.getPreferredSize();
+        int  center = 450;
+        score.setBounds(center, 10, d.width,d.height);
 
 
         if(checkCollision()){
@@ -376,23 +414,23 @@ public class AppWindow extends JFrame {
 
     //hitbox maler von chati
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(3));
-
-        // Zeichne Pinguin-Box (Rot)
-        Rectangle p = charakter.getBounds();
-        p.grow(-15, -10);
-        g2.setColor(Color.RED);
-        g2.drawRect(p.x, p.y, p.width, p.height);
-
-        // Zeichne Hindernis-Box (Blau)
-        Rectangle h = hinderniss.getBounds();
-        h.grow(-15, -15);
-        g2.setColor(Color.BLUE);
-        g2.drawRect(h.x, h.y, h.width, h.height);
-    }
+//    @Override
+//    public void paint(Graphics g) {
+//        super.paint(g);
+//        Graphics2D g2 = (Graphics2D) g;
+//        g2.setStroke(new BasicStroke(3));
+//
+//        // Zeichne Pinguin-Box (Rot)
+//        Rectangle p = charakter.getBounds();
+//        p.grow(-15, -10);
+//        g2.setColor(Color.RED);
+//        g2.drawRect(p.x, p.y, p.width, p.height);
+//
+//        // Zeichne Hindernis-Box (Blau)
+//        Rectangle h = hinderniss.getBounds();
+//        h.grow(-15, -15);
+//        g2.setColor(Color.BLUE);
+//        g2.drawRect(h.x, h.y, h.width, h.height);
+//    }
 
 }
