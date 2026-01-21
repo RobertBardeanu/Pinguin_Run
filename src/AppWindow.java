@@ -1,13 +1,7 @@
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class AppWindow extends JFrame {
@@ -45,10 +39,10 @@ public class AppWindow extends JFrame {
     private JLabel hintergrund2,hintergrund3;
     private JButton resetbutton;
 
-    private JLabel groundlabel,groundlabel2,groundlabel3;
+    final private JLabel groundlabel,groundlabel2,groundlabel3;
 
-    private ImageIcon penguinOnGround;
-    private ImageIcon penguinJump;
+    final ImageIcon penguinOnGround;
+    final private ImageIcon penguinJump;
 
     private final int GROUND_Y = 300;
     private final int BACKGROUND_Y=0;
@@ -61,14 +55,13 @@ public class AppWindow extends JFrame {
 
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
     private int treeSpeed = 500;     // Geschwindigkeit des Baums
-    private Random random = new Random();
+    final private Random random = new Random();
     private boolean GameOver = false,Paused = false;
 
     BackgroundMusic musikPlayer = new BackgroundMusic();
 
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
-    private final int MAX_JUMP_HEIGHT = 400;
 
 
 
@@ -139,7 +132,6 @@ public class AppWindow extends JFrame {
         Score=new JLabel("");
         resetbutton=new JButton("Reset");
 
-        Dimension d=Score.getPreferredSize();
         Score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         Score.setForeground(Color.red);
         resetbutton.setBackground(Color.red);
@@ -191,7 +183,6 @@ public class AppWindow extends JFrame {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                boolean sprung = true;
 
 
                 if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
@@ -362,7 +353,7 @@ public class AppWindow extends JFrame {
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
         updateBackground(deltaTime);
-        Score.setText("Score:"+String.valueOf(punkte));
+        Score.setText("Score:"+punkte);
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
 
