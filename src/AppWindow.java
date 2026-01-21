@@ -209,7 +209,6 @@ public class AppWindow extends JFrame {
 
 
         Score.setText("Game Over :(");
-        Score.revalidate();
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
 
@@ -258,11 +257,21 @@ public class AppWindow extends JFrame {
         };
     }
     private void score(){
-        punkte+=random.nextInt(1,10);
+        int maxSpeed = 2000     ;
         Score.setText("Score:"+String.valueOf(punkte));
-        Score.revalidate();
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
+        if(punkte>=10&treeSpeed < maxSpeed){
+            treeSpeed = treeSpeed+10;
+            System.out.println("treeSpeed: " + treeSpeed);
+
+        }
+        if(treeSpeed>=1000){
+            punkte+=random.nextInt(10,100);
+        }
+        else{
+            punkte+=random.nextInt(1,10);
+        }
     }
 
     //Kollision
