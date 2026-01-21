@@ -3,6 +3,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -42,6 +43,7 @@ public class AppWindow extends JFrame {
     private JLabel netzHinderniss;
     private JLabel hintergrund;
     private JLabel hintergrund2,hintergrund3;
+    private JButton resetbutton;
 
     private JLabel groundlabel,groundlabel2,groundlabel3;
 
@@ -134,10 +136,13 @@ public class AppWindow extends JFrame {
         groundlabel3=new JLabel(ground);
 
         Score=new JLabel("");
+        resetbutton=new JButton("Reset");
 
         Dimension d=Score.getPreferredSize();
         Score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         Score.setForeground(Color.red);
+        resetbutton.setBackground(Color.red);
+        resetbutton.setFont(new Font(Font.DIALOG,Font.BOLD,20));
 
 
 
@@ -154,10 +159,13 @@ public class AppWindow extends JFrame {
         Score.setBounds(0, 0, 100,20);
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
         groundlabel2.setBounds(0, -20, getWidth(),getHeight());
-        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
-
+        resetbutton.setBounds(450, 200,100,100);
+            groundlabel3.setBounds(0, -20, getWidth(),getHeight());
+        resetbutton.setVisible(false);
 
         // Label ins Fenster hinzufügen
+        this.add(resetbutton);
+
         this.add(charakter);
 
         this.add(Score);
@@ -176,6 +184,7 @@ public class AppWindow extends JFrame {
 
         // Erstes Hindernis festlegen
         hinderniss.setIcon(getRandomObstacleIcon());
+
 
         //Springen mit keylistener | Leerzeichen
         this.addKeyListener(new KeyAdapter() {
@@ -202,14 +211,15 @@ public class AppWindow extends JFrame {
     }
 
     private void gameOver(){
+        resetbutton.setVisible(true);
         GameOver = true;
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
 
-
         Score.setText("Game Over :(");
         Dimension d=Score.getPreferredSize();
         Score.setBounds(0, 0, d.width,d.height);
+
 
     }
 
