@@ -58,7 +58,7 @@ public class AppWindow extends JFrame {
     private final int JUMP_FORCE = -15000;
 
     private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
-    private int treeSpeed = 400;     // Geschwindigkeit des Baums
+    private int treeSpeed = 500;     // Geschwindigkeit des Baums
     private Random random = new Random();
     private boolean GameOver = false;
     BackgroundMusic musikPlayer = new BackgroundMusic();
@@ -257,10 +257,10 @@ public class AppWindow extends JFrame {
     }
     private void score(){
         int maxSpeed = 2000     ;
-        if(punkte>=10&treeSpeed < maxSpeed){
+        if(punkte>=10&&treeSpeed < maxSpeed)
+        {
             treeSpeed = treeSpeed+10;
             System.out.println("treeSpeed: " + treeSpeed);
-
         }
         if(treeSpeed>=1000){
             punkte+=random.nextInt(10,100);
