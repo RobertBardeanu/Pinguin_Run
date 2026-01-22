@@ -55,7 +55,7 @@ public class AppWindow extends JFrame {
     final private Random random = new Random();
     private boolean GameOver = false,Paused = false;
 
-    BackgroundMusic musikPlayer = new BackgroundMusic();
+    Sound musikPlayer = new Sound();
 
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
@@ -172,6 +172,7 @@ public class AppWindow extends JFrame {
 
 
 
+
         robbenHinderniss =new JLabel(Robbe);
         baumHinderniss =new JLabel(tree);
         netzHinderniss =new JLabel(Netz);
@@ -221,7 +222,7 @@ public class AppWindow extends JFrame {
 
 
                 if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
-
+                    musikPlayer.jump();
                     yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
                     System.out.println("yVel: " + yVelocity);
 
@@ -241,6 +242,8 @@ public class AppWindow extends JFrame {
 
     private void gameOver(){
         resetbutton.setVisible(true);
+        musikPlayer.deadsound();
+
         GameOver = true;
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
@@ -310,10 +313,13 @@ public class AppWindow extends JFrame {
         }
         if(obstacleSpeed >=1000){
             punkte+=random.nextInt(10,100);
+
         }
         else{
             punkte+=random.nextInt(1,10);
         }
+
+
     }
 
     //Kollision
