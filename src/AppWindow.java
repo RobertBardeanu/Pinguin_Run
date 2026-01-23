@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Random;
+import java.io.*;
+
 
 public class AppWindow extends JFrame {
 
@@ -134,6 +137,7 @@ public class AppWindow extends JFrame {
         score = new JLabel("");
         score.setVerticalAlignment(JLabel.CENTER);
 
+
         //Resetbutton
         resetbutton=new JButton("Reset");
         resetbutton.addActionListener(new  ActionListener() {
@@ -238,6 +242,36 @@ public class AppWindow extends JFrame {
         // Pinguin und alles erst ganz am Ende sichtbar machen, um java anzeigefehler zu meiden
         this.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
         this.setVisible(true);
+
+
+
+    }
+    public int leseHighscore() throws Exception {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Highscore.txt"));
+            String line = reader.readLine();
+            reader.close();
+
+            if (line != null) {
+                return Integer.parseInt(line);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Fehler beim Lesen der Highscore.");
+        }
+        return 0;
+
+    }
+
+
+    public void schreibeHighscore(int score) {
+        try {
+            FileWriter writer = new FileWriter("src/Highscore.txt");
+            writer.write(String.valueOf(score));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void gameOver(){
@@ -251,6 +285,17 @@ public class AppWindow extends JFrame {
         score.setText("Game Over :(");
         Dimension d= score.getPreferredSize();
         score.setBounds(0, 0, d.width,d.height);
+        try{
+            //funktionirt noch nicht richtig
+            int gespeicherterScore = leseHighscore();
+            if (punkte > gespeicherterScore) {
+                schreibeHighscore(punkte);
+                System.out.println("Neuer Highscore!");
+            } else {
+                System.out.println("Kein neuer Highscore.");
+            }
+        }
+        catch(Exception e){}
 
     }
 
@@ -340,7 +385,13 @@ public class AppWindow extends JFrame {
 
 
 
-    //Physik Methode fürs Springen
+
+
+
+
+
+
+        //Physik Methode fürs Springen
     private void updatePhysics(final double deltaTime) {
 
         //Sprung
