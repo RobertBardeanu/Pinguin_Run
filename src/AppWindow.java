@@ -266,7 +266,7 @@ public class AppWindow extends JFrame {
 
     public void schreibeHighscore(int score) {
         try {
-            FileWriter writer = new FileWriter("src/Highscore.txt");
+            FileWriter writer =new FileWriter("Highscore.txt");
             writer.write(String.valueOf(score));
             writer.close();
         } catch (IOException e) {
