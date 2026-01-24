@@ -17,6 +17,7 @@ import java.io.*;
 public class AppWindow extends JFrame {
 
 
+    /**
 
 
     //Sprites: Tobias //vllt echt auch mit nem extra Thread
