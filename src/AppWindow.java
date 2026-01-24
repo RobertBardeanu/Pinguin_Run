@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.Random;
 import java.io.*;
 
+/**
+ * Das Hauptfenster des Spiels "Pinguin Run".
+ * Diese Klasse verwaltet das GUI, die Spielmechaniken wie Springen und Kollisionen
+ * sowie das Highscore-System.
+ * * @author Robert, Maik, Tobias
+ * @version 1.0
+ */
 
 public class AppWindow extends JFrame {
 
@@ -32,42 +39,61 @@ public class AppWindow extends JFrame {
     //Methoden in extra Klasse, Code aufräumen
 
 
-    //variablen
-    private int   punkte=0;
-    private JLabel score;
+    /** Aktueller Punktestand des Spielers */
+    private int punkte = 0;
 
+
+    private JLabel score;
     private JLabel charakter,hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
     private JLabel hintergrund,hintergrund2,hintergrund3;
-
+    final private JLabel groundlabel,groundlabel2,groundlabel3;
     private JButton resetbutton;
 
-    final private JLabel groundlabel,groundlabel2,groundlabel3;
+
 
     final private ImageIcon penguinOnGround,penguinJump;
 
+    /** Y-Koordinate des Bodens, auf dem der Pinguin läuft */
     private final int GROUND_Y = 300;
+    /** X-Koordinate Hintergrund*/
     private int BACKGROUND_X = 0;
+    /** X-Koordinate Boden*/
     private int GROUND_X = 0;
-    private int yPos = GROUND_Y; // Startposition (Y-Achse)
-    private int yVelocity = 0; // Aktuelle Sprunggeschwindigkeit
+    /** Startposition auf der y-Achse */
+    private int yPos = GROUND_Y;
+    /** Aktuelle vertikale Geschwindigkeit des Charakters */
+    private int yVelocity = 0;
+    /** Stärke der Abwärtsbeschleunigung */
     private final int GRAVITY = 80;
+    /** Die initiale Kraft, die beim Springen nach oben wirkt */
     private final int JUMP_FORCE = -15000;
-
-    private int obstacleX = 1000; // Startposition rechts außerhalb des Fensters
-    private int obstacleSpeed = 500;     // Geschwindigkeit des Baums
+    /** Aktuelle horizontale Position des Hindernisses */
+    private int obstacleX = 1000;
+    /** Geschwindigkeit, mit der sich Hindernisse auf den Spieler zubewegen */
+    private int obstacleSpeed = 500;
     final private Random random = new Random();
-    private boolean GameOver = false,Paused = false;
-
+    /** Statusflag, ob das Spiel beendet ist */
+    private boolean GameOver = false, Paused = false;
+    /** Manager für die Audiowiedergabe (Musik und Soundeffekte). */
     Sound musikPlayer = new Sound();
 
 
     private Jump_States currentJumpState = Jump_States.ON_GROUND;
 
-
+    /**
+     * Erstellt ein neues Spiel-Fenster und initialisiert alle Spielkomponenten.
+     * * Der Konstruktor führt folgende Schritte aus:
+     * 1. Konfiguration des JFrame (Größe, Titel, Schließverhalten).
+     * 2. Start der Hintergrundmusik über den musikPlayer.
+     * 3. Laden und Skalieren aller grafischen Ressourcen (Pinguin, Hindernisse, Hintergründe).
+     * 4. Instanziierung der UI-Elemente und des Reset-Buttons.
+     * 5. Registrierung des KeyListeners für die Sprung-Steuerung.
+     * 6. Start des Game-Loops.
+     */
 
     AppWindow()  {
 
-        //Window intialisieren
+        // Fenster-Konfiguration
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Pinguin Run");
         this.setSize(1000, 500);
@@ -79,12 +105,8 @@ public class AppWindow extends JFrame {
 
         musikPlayer.starteMusik();
 
-
-
-
-
-
-        // Bild laden
+        // Ressourcen-Management
+        // Bilder laden und für die Darstellung skalieren
         ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
         ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
 
@@ -94,11 +116,10 @@ public class AppWindow extends JFrame {
         ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
         ImageIcon originalnetz = new ImageIcon("src/Media/Bilder/fischernetz.png");
 
-        //Icon
         this.setIconImage(originalPenguinOnGround.getImage());
 
 
-        // Bild skalieren (z.B. auf 50x50 Pixel)
+        // Bild skalieren
 
         Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         penguinOnGround = new ImageIcon(scaledImagePenguinOnGround);
@@ -121,10 +142,14 @@ public class AppWindow extends JFrame {
         Image scaledImageNetz = originalnetz.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon Netz=new ImageIcon(scaledImageNetz);
 
-        // Bild in ein Label setzen
+        // UI-Komponenten
+        // Initialisierung von Labels für Score, Charakter und Hindernisse
         charakter = new JLabel(penguinOnGround);
 
         hinderniss = new JLabel();
+        robbenHinderniss =new JLabel(Robbe);
+        baumHinderniss =new JLabel(tree);
+        netzHinderniss =new JLabel(Netz);
 
         hintergrund=new JLabel(hintergrundimage);
         hintergrund2=new JLabel(hintergrundimage);
@@ -138,7 +163,20 @@ public class AppWindow extends JFrame {
         score.setVerticalAlignment(JLabel.CENTER);
 
 
-        //Resetbutton
+        charakter.setBounds(100, yPos, 100, 100);
+        hinderniss.setBounds(obstacleX, yPos, 100, 100);
+        robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
+        hintergrund.setBounds(0, -100, getWidth(),getHeight());
+        hintergrund3.setBounds(0, -100, getWidth(),getHeight());
+        hintergrund2.setBounds(0, -100, getWidth(),getHeight());
+
+        groundlabel.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel2.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
+
+
+
+        //Resetbutton und ActionListener zum zurücksetzen
         resetbutton=new JButton("Reset");
         resetbutton.addActionListener(new  ActionListener() {
             @Override
@@ -166,60 +204,46 @@ public class AppWindow extends JFrame {
             }
         });
 
+        resetbutton.setBounds(450, 200, 120, 50);
+        resetbutton.setFont(new Font("SansSerif", Font.BOLD, 18));
+        resetbutton.setBackground(new Color(46, 204, 113));
+        resetbutton.setForeground(Color.WHITE);
+        resetbutton.setFocusPainted(false);
+        resetbutton.setBorder(BorderFactory.createLineBorder(new Color(39, 174, 96), 2));
+        resetbutton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        resetbutton.setVisible(false);
 
+        //ScoreSchrift
         score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         score.setForeground(Color.decode("#F5EADD"));
 
 
-        resetbutton.setBackground(Color.green);
-        resetbutton.setFont(new Font(Font.DIALOG,Font.BOLD,20));
-
-
-
-
-        robbenHinderniss =new JLabel(Robbe);
-        baumHinderniss =new JLabel(tree);
-        netzHinderniss =new JLabel(Netz);
-
-        charakter.setBounds(100, yPos, 100, 100);
-        hinderniss.setBounds(obstacleX, yPos, 100, 100);
-        robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
-        hintergrund.setBounds(0, -100, getWidth(),getHeight());
-        hintergrund3.setBounds(0, -100, getWidth(),getHeight());
-        hintergrund2.setBounds(0, -100, getWidth(),getHeight());
-
-        groundlabel.setBounds(0, -20, getWidth(),getHeight());
-        groundlabel2.setBounds(0, -20, getWidth(),getHeight());
-        resetbutton.setBounds(450, 200,100,100);
-        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
-        resetbutton.setVisible(false);
-
         // Label ins Fenster hinzufügen
+        //interaktiv
         this.add(resetbutton);
-
-
-
-        this.add(charakter);
-
         this.add(score);
+
+        //Spielelemente
+        this.add(charakter);
+        this.add(hinderniss);
         this.add(robbenHinderniss);
 
-        this.add(hinderniss);
-
+        //Boden
         this.add(groundlabel);
         this.add(groundlabel2);
         this.add(groundlabel3);
 
-        this.add(hintergrund2);
+        //Hintergrund
         this.add(hintergrund);
+        this.add(hintergrund2);
         this.add(hintergrund3);
-
 
         // Erstes Hindernis festlegen
         hinderniss.setIcon(getRandomObstacleIcon());
 
 
-        //Springen mit keylistener | Leerzeichen
+        // Steuerung
+        // KeyListener für die Leertaste/Pfeiltaste oben zum Springen
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -235,17 +259,22 @@ public class AppWindow extends JFrame {
         });
 
 
-
+        // Spielstart
         GameLoop loop = new GameLoop(this);
         loop.start();
-
-        // Pinguin und alles erst ganz am Ende sichtbar machen, um java anzeigefehler zu meiden
         this.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
         this.setVisible(true);
 
 
 
     }
+
+    /**
+     * Liest den aktuellen Highscore aus der lokalen Textdatei aus.
+     * * @return Der gespeicherte Highscore als Ganzzahl; 0, falls die Datei nicht existiert oder leer ist.
+     * @throws Exception Wenn beim Dateizugriff ein schwerwiegender Fehler auftritt.
+     */
+
     public int leseHighscore() throws Exception {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Highscore.txt"));
@@ -263,6 +292,10 @@ public class AppWindow extends JFrame {
 
     }
 
+    /**
+     * Speichert den neuen Highscore in der lokalen Textdatei.
+     * @param score Der zu speichernde Punktwert.
+     */
 
     public void schreibeHighscore(int score) {
         try {
@@ -274,6 +307,10 @@ public class AppWindow extends JFrame {
         }
     }
 
+    /**
+     * Beendet das laufende Spiel, stoppt die Musik und löst den Game-Over-Sound aus.
+     * Zeigt den Reset-Button an und prüft, ob der aktuelle Punktestand den Highscore bricht.
+     */
     private void gameOver(){
         resetbutton.setVisible(true);
         musikPlayer.deadsound();
@@ -299,6 +336,12 @@ public class AppWindow extends JFrame {
 
     }
 
+    /**
+     * Aktualisiert die horizontale Position des Hindernisses.
+     * Setzt das Hindernis zurück auf die Startposition, sobald es den linken Bildschirmrand
+     * verlässt, und löst die Punktvergabe aus.
+     * @param deltaTime Zeitdifferenz seit dem letzten Update zur Berechnung der Framerate-unabhängigen Bewegung.
+     */
     private void updateObstacle(final double deltaTime) {
         final int treeVel = (int)Math.round(obstacleSpeed * deltaTime);
         obstacleX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
@@ -314,6 +357,10 @@ public class AppWindow extends JFrame {
 
     }
 
+    /**
+     * Berechnet die Bewegung des Hintergrunds, um einen Parallax-Effekt zu erzeugen.
+     * @param deltaTime Zeitdifferenz seit dem letzten Update.
+     */
 
     private void updateBackground(final double deltaTime) {
         final int speed = (int)Math.round(100 * deltaTime);
@@ -328,6 +375,11 @@ public class AppWindow extends JFrame {
         }
     }
 
+    /**
+     * Bewegt die Bodentextur synchron zur Spielgeschwindigkeit, um eine realistische Laufanimation zu erzeugen
+     * @param deltaTime Zeitdifferenz seit dem letzten Update.
+     */
+
     private void updateGround(final double deltaTime) {
         final int speed = (int)Math.round(obstacleSpeed * deltaTime);
         GROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
@@ -341,6 +393,11 @@ public class AppWindow extends JFrame {
         }
     }
 
+    /**
+     * Wählt zufällig eines der verfügbaren Hindernis-Icons (Robbe, Baum oder Netz) aus.
+     * @return Eines der ImageIcon für das nächste Hindernis.
+     */
+
     private Icon getRandomObstacleIcon() {
         return switch (random.nextInt(1, 4)) {
             case 1 -> robbenHinderniss.getIcon();
@@ -349,6 +406,12 @@ public class AppWindow extends JFrame {
             default -> null;
         };
     }
+
+    /**
+     * Erhöht den Punktestand und steigert dabei jedes mal die Spielgeschwindigkeit.
+     * Ab einer Geschwindigkeit von 1000 wird ein Bonus-Score vergeben.
+     */
+
     private void score(){
         int maxSpeed = 2000     ;
         if(punkte>=10&& obstacleSpeed < maxSpeed)
@@ -367,7 +430,12 @@ public class AppWindow extends JFrame {
 
     }
 
-    //Kollision
+    /**
+     * Prüft auf eine Überschneidung der Hitboxen von Charakter und Hindernis.
+     * Die Hitboxen werden leicht verkleinert ("grow"), um eine fairere Kollisionsabfrage zu ermöglichen.
+     * @return true, wenn eine Kollision vorliegt, andernfalls false.
+     */
+
     private boolean checkCollision(){
         Rectangle pinguinRect = charakter.getBounds();
         Rectangle hindernisRect = hinderniss.getBounds();
@@ -381,17 +449,12 @@ public class AppWindow extends JFrame {
     }
 
 
+    /**
+     * Berechnet die vertikale Bewegung des Charakters.
+     * Bemerkt zudem ob der Charakter auf dem Boden oder im Sprung ist um eine Animation zu ermöglichen
+     * @param deltaTime Zeitdifferenz seit dem letzten Update.
+     */
 
-
-
-
-
-
-
-
-
-
-        //Physik Methode fürs Springen
     private void updatePhysics(final double deltaTime) {
 
         //Sprung
@@ -427,9 +490,9 @@ public class AppWindow extends JFrame {
     }
 
 
-
-
-
+    /**
+     * Wechselt das Icon des Charakters basierend auf dem aktuellen Jump_State
+     */
     private void updateSprite() {
         switch (currentJumpState) {
             case ON_GROUND -> charakter.setIcon(penguinOnGround);
@@ -438,9 +501,12 @@ public class AppWindow extends JFrame {
     }
 
 
+    /**
+     * Haupt-Update-Methode, die alle Teilbereiche (Physik, Hindernisse, Boden, Hintergrund)
+     * aktualisiert, sofern das Spiel nicht pausiert oder beendet ist.
+     * @param deltaTime Zeitdifferenz seit dem letzten Update.
+     */
 
-
-    //
     public void updateAll(final double deltaTime)
     {
 
@@ -474,30 +540,11 @@ public class AppWindow extends JFrame {
 
 
     public static void main(String[] args) {
-        //windows abrufen
+
         AppWindow window = new AppWindow();
 
     }
 
-    //hitbox maler von chati
 
-//    @Override
-//    public void paint(Graphics g) {
-//        super.paint(g);
-//        Graphics2D g2 = (Graphics2D) g;
-//        g2.setStroke(new BasicStroke(3));
-//
-//        // Zeichne Pinguin-Box (Rot)
-//        Rectangle p = charakter.getBounds();
-//        p.grow(-15, -10);
-//        g2.setColor(Color.RED);
-//        g2.drawRect(p.x, p.y, p.width, p.height);
-//
-//        // Zeichne Hindernis-Box (Blau)
-//        Rectangle h = hinderniss.getBounds();
-//        h.grow(-15, -15);
-//        g2.setColor(Color.BLUE);
-//        g2.drawRect(h.x, h.y, h.width, h.height);
-//    }
 
 }
