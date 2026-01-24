@@ -1,4 +1,9 @@
 import java.io.*;
+/**
+ * HIGHSCORE Verwalter
+ * @author Robert, Maik, Tobias
+ * @version 1.0
+ */
 
 public class HighscoreManager {
     private static final String FILE_NAME = "Highscore.txt";

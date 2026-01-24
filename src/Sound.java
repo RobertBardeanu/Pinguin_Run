@@ -2,7 +2,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
-
+/**
+ * Musik Verwalter
+ * @author Robert, Maik, Tobias
+ * @version 1.0
+ */
 public class Sound {
 
 

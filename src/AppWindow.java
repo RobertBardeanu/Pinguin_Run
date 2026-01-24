@@ -10,9 +10,7 @@ import java.io.*;
 
 /**
  * Das Hauptfenster des Spiels "Pinguin Run".
- * Diese Klasse verwaltet das GUI, die Spielmechaniken wie Springen und Kollisionen
- * sowie das Highscore-System.
- * * @author Robert, Maik, Tobias
+ * @author Robert, Maik, Tobias
  * @version 1.0
  */
 

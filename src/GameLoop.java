@@ -1,3 +1,8 @@
+/**
+ * Game Loop Verwalter für konstante fps
+ * @author Robert, Maik, Tobias ( eigentlich Lukas)
+ * @version 1.0
+ */
 public class GameLoop implements Runnable
 {
     boolean gameRunning;
