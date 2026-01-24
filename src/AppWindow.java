@@ -119,6 +119,9 @@ public class AppWindow extends JFrame {
         this.setIconImage(originalPenguinOnGround.getImage());
 
 
+
+
+
         // Bild skalieren
 
         Image scaledImagePenguinOnGround = originalPenguinOnGround.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -269,43 +272,9 @@ public class AppWindow extends JFrame {
 
     }
 
-    /**
-     * Liest den aktuellen Highscore aus der lokalen Textdatei aus.
-     * * @return Der gespeicherte Highscore als Ganzzahl; 0, falls die Datei nicht existiert oder leer ist.
-     * @throws Exception Wenn beim Dateizugriff ein schwerwiegender Fehler auftritt.
-     */
 
-    public int leseHighscore() throws Exception {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("Highscore.txt"));
-            String line = reader.readLine();
-            reader.close();
 
-            if (line != null) {
-                return Integer.parseInt(line);
-            }
-        }
-        catch (IOException e) {
-            System.out.println("Fehler beim Lesen der Highscore.");
-        }
-        return 0;
 
-    }
-
-    /**
-     * Speichert den neuen Highscore in der lokalen Textdatei.
-     * @param score Der zu speichernde Punktwert.
-     */
-
-    public void schreibeHighscore(int score) {
-        try {
-            FileWriter writer =new FileWriter("Highscore.txt");
-            writer.write(String.valueOf(score));
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Beendet das laufende Spiel, stoppt die Musik und löst den Game-Over-Sound aus.
@@ -324,9 +293,9 @@ public class AppWindow extends JFrame {
         score.setBounds(0, 0, d.width,d.height);
         try{
             //funktionirt noch nicht richtig
-            int gespeicherterScore = leseHighscore();
+            int gespeicherterScore = HighscoreManager.leseHighscore();
             if (punkte > gespeicherterScore) {
-                schreibeHighscore(punkte);
+                HighscoreManager.schreibeHighscore(punkte);
                 System.out.println("Neuer Highscore!");
             } else {
                 System.out.println("Kein neuer Highscore.");
