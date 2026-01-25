@@ -334,13 +334,13 @@ public class AppWindow extends JFrame {
             }
         }
         catch(Exception e){}
-        score.setText(
-                "<html>Game Over :( <br>Highscore: "
+        score.setText("<html> Game Over :( <br> Score: " + punkte + "<br>" +
+                "Highscore: "
                         + HighscoreManager.leseHighscore() +
                         "</html>"
         );        Dimension d= score.getPreferredSize();
-        score.setForeground(new Color(255, 0, 0));
-        score.setBounds(450 ,10, d.width,d.height);
+        score.setForeground(new Color(255, 255, 255));
+        score.setBounds(420 ,10, d.width,d.height);
 
 
     }
