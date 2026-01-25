@@ -322,13 +322,6 @@ public class AppWindow extends JFrame {
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
 
-        score.setText(
-                "<html>Game Over :( <br>Highscore: "
-                        + HighscoreManager.leseHighscore() +
-                        "</html>"
-        );        Dimension d= score.getPreferredSize();
-        score.setForeground(new Color(255, 0, 0));
-        score.setBounds(450 ,10, d.width,d.height);
         try{
             //funktionirt noch nicht richtig
             int gespeicherterScore = HighscoreManager.leseHighscore();
@@ -340,6 +333,14 @@ public class AppWindow extends JFrame {
             }
         }
         catch(Exception e){}
+        score.setText(
+                "<html>Game Over :( <br>Highscore: "
+                        + HighscoreManager.leseHighscore() +
+                        "</html>"
+        );        Dimension d= score.getPreferredSize();
+        score.setForeground(new Color(255, 0, 0));
+        score.setBounds(450 ,10, d.width,d.height);
+
 
     }
 
