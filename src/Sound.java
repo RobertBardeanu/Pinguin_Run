@@ -77,4 +77,8 @@ public class Sound {
             clip.stop();
         }
     }
+    public void resetMusik(){
+        clip.setMicrosecondPosition(0);
+    }
+
 }

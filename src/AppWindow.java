@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Random;
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Das Hauptfenster des Spiels "Pinguin Run".
@@ -46,6 +47,9 @@ public class AppWindow extends JFrame {
     private JLabel hintergrund,hintergrund2,hintergrund3;
     final private JLabel groundlabel,groundlabel2,groundlabel3;
     private JButton resetbutton;
+    private  JButton startbutton;
+    GameLoop loop = new GameLoop(this);
+
 
 
 
@@ -71,7 +75,7 @@ public class AppWindow extends JFrame {
     private int obstacleSpeed = 500;
     final private Random random = new Random();
     /** Statusflag, ob das Spiel beendet ist */
-    private boolean GameOver = false, Paused = false;
+    private boolean GameOver = false, GameStart = false;
     /** Manager für die Audiowiedergabe (Musik und Soundeffekte). */
     Sound musikPlayer = new Sound();
 
@@ -101,7 +105,6 @@ public class AppWindow extends JFrame {
 
         //Musik initialisieren
 
-        musikPlayer.starteMusik();
 
         // Ressourcen-Management
         // Bilder laden und für die Darstellung skalieren
@@ -161,7 +164,6 @@ public class AppWindow extends JFrame {
         groundlabel3=new JLabel(ground);
 
         score = new JLabel("");
-        score.setVerticalAlignment(JLabel.CENTER);
 
 
         charakter.setBounds(100, yPos, 100, 100);
@@ -179,9 +181,12 @@ public class AppWindow extends JFrame {
 
         //Resetbutton und ActionListener zum zurücksetzen
         resetbutton=new JButton("Reset");
+        startbutton=new JButton("Start");
+
         resetbutton.addActionListener(new  ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                score.setForeground(Color.decode("#F5EADD"));
 
                 punkte = 0;
                 obstacleX = 1000;
@@ -196,11 +201,27 @@ public class AppWindow extends JFrame {
                 hinderniss.setLocation(obstacleX, GROUND_Y);
                 resetbutton.setVisible(false);
 
-                // 3. Musik neu starten (falls gewünscht)
+                musikPlayer.resetMusik();
                 musikPlayer.starteMusik();
 
                 // Fokus zurück auf das Fenster (wichtig für KeyListener!)
                 AppWindow.this.requestFocusInWindow();
+
+            }
+        });
+        startbutton.addActionListener(new  ActionListener()   {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                musikPlayer.starteMusik();
+                try {
+                    Thread.sleep(500);
+                }
+                catch (InterruptedException exception) {
+                    System.err.println(exception );
+                }
+                StarteGame();
+                AppWindow.this.requestFocusInWindow();
+
 
             }
         });
@@ -214,6 +235,15 @@ public class AppWindow extends JFrame {
         resetbutton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         resetbutton.setVisible(false);
 
+        startbutton.setBounds(450, 200, 120, 50);
+        startbutton.setFont(new Font("SansSerif", Font.BOLD, 18));
+        startbutton.setBackground(new Color(46, 204, 113));
+        startbutton.setForeground(Color.WHITE);
+        startbutton.setFocusPainted(false);
+        startbutton.setBorder(BorderFactory.createLineBorder(new Color(39, 174, 96), 2));
+        startbutton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        startbutton.setVisible(true);
+
         //ScoreSchrift
         score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
         score.setForeground(Color.decode("#F5EADD"));
@@ -222,6 +252,7 @@ public class AppWindow extends JFrame {
         // Label ins Fenster hinzufügen
         //interaktiv
         this.add(resetbutton);
+        this.add(startbutton);
         this.add(score);
 
         //Spielelemente
@@ -253,7 +284,6 @@ public class AppWindow extends JFrame {
                 if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
                     if(!GameOver) {
                         musikPlayer.jump();
-
                     }
                     yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
                     System.out.println("yVel: " + yVelocity);
@@ -264,8 +294,6 @@ public class AppWindow extends JFrame {
 
 
         // Spielstart
-        GameLoop loop = new GameLoop(this);
-        loop.start();
         this.setLocationRelativeTo(null); // Zentriert das Fenster auf dem Bildschirm
         this.setVisible(true);
 
@@ -281,7 +309,12 @@ public class AppWindow extends JFrame {
      * Beendet das laufende Spiel, stoppt die Musik und löst den Game-Over-Sound aus.
      * Zeigt den Reset-Button an und prüft, ob der aktuelle Punktestand den Highscore bricht.
      */
+    private  void StarteGame(){
+        startbutton.setVisible(false);
+        loop.start();
+    }
     private void gameOver(){
+
         resetbutton.setVisible(true);
         musikPlayer.deadsound();
 
@@ -289,9 +322,13 @@ public class AppWindow extends JFrame {
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
 
-        score.setText("Game Over :(");
-        Dimension d= score.getPreferredSize();
-        score.setBounds(0, 0, d.width,d.height);
+        score.setText(
+                "<html>Game Over :( <br>Highscore: "
+                        + HighscoreManager.leseHighscore() +
+                        "</html>"
+        );        Dimension d= score.getPreferredSize();
+        score.setForeground(new Color(255, 0, 0));
+        score.setBounds(450 ,10, d.width,d.height);
         try{
             //funktionirt noch nicht richtig
             int gespeicherterScore = HighscoreManager.leseHighscore();
@@ -483,9 +520,7 @@ public class AppWindow extends JFrame {
         if (GameOver) {
             return;
         }
-        if (Paused){
-            return;
-        }
+
 
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
