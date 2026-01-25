@@ -251,7 +251,10 @@ public class AppWindow extends JFrame {
 
 
                 if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
-                    musikPlayer.jump();
+                    if(!GameOver) {
+                        musikPlayer.jump();
+
+                    }
                     yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
                     System.out.println("yVel: " + yVelocity);
 
