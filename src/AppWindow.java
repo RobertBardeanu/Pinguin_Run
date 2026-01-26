@@ -11,14 +11,18 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Das Hauptfenster des Spiels "Pinguin Run".
- * @author Robert, Maik, Tobias
+ * <p>
+ * Diese Klasse verwaltet das GUI, die Spielphysik sowie die
+ * Kollisionsabfrage und den Punktestand.
+ * </p>
+ * * @author Robert, Maik, Tobias
  * @version 1.0
  */
 
 public class AppWindow extends JFrame {
 
 
-    /**
+
 
 
     //Sprites: Tobias //vllt echt auch mit nem extra Thread
@@ -33,13 +37,12 @@ public class AppWindow extends JFrame {
     //Tests:
     //Javadoc:
 
-
     //Optional
     //Powerups:
     //Methoden in extra Klasse, Code aufräumen
 
 
-    /** Aktueller Punktestand des Spielers */
+    /** Aktueller Punktestand des Spielers. */
     private int punkte = 0;
 
 
@@ -499,7 +502,7 @@ public class AppWindow extends JFrame {
 
 
     /**
-     * Wechselt das Icon des Charakters basierend auf dem aktuellen Jump_State
+     * <p>   Wechselt das Icon des Charakters basierend auf dem aktuellen Jump_State</p>
      */
     private void updateSprite() {
         switch (currentJumpState) {
