@@ -104,24 +104,23 @@ public class AppWindow extends JFrame {
         this.getContentPane().setBackground(Color.white);
         this.setResizable(false);
 
+
+
         //Musik initialisieren
 
 
         // Ressourcen-Management
         // Bilder laden und für die Darstellung skalieren
-        ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguin-ohnehintergrund.png");
-        ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/pinguin.jump2-removebg-preview.png");
+        ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguinOnGround.png");
+        ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/penguinJump.png");
 
-        ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree-ohnehintergrund.png");
-        ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/BG_02.png"); //Hintergrund von craftpix.net
-        ImageIcon originalGround = new ImageIcon("src/Media/Bilder/Ground_01.png");
-        ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/Robbe.png");
+        ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree.png");
+        ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/background.png"); //Hintergrund von craftpix.net
+        ImageIcon originalGround = new ImageIcon("src/Media/Bilder/ground.png");
+        ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/robbe.png");
         ImageIcon originalnetz = new ImageIcon("src/Media/Bilder/fischernetz.png");
 
         this.setIconImage(originalPenguinOnGround.getImage());
-
-
-
 
 
         // Bild skalieren
