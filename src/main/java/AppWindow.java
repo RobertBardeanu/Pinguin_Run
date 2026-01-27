@@ -91,14 +91,14 @@ public class AppWindow extends JFrame {
 
         // Ressourcen-Management
         // Bilder laden und für die Darstellung skalieren
-        ImageIcon originalPenguinOnGround = new ImageIcon("src/Media/Bilder/penguinOnGround.png");
-        ImageIcon originalPenguinJump = new ImageIcon("src/Media/Bilder/penguinJump.png");
+        ImageIcon originalPenguinOnGround = new ImageIcon("src/main/resources/Media/Bilder/penguinOnGround.png");
+        ImageIcon originalPenguinJump = new ImageIcon("src/main/resources/Media/Bilder/penguinJump.png");
 
-        ImageIcon originalIcontree = new ImageIcon("src/Media/Bilder/tree.png");
-        ImageIcon Hintergrund = new ImageIcon("src/Media/Bilder/background.png"); //Hintergrund von craftpix.net
-        ImageIcon originalGround = new ImageIcon("src/Media/Bilder/ground.png");
-        ImageIcon originalrobbe = new ImageIcon("src/Media/Bilder/robbe.png");
-        ImageIcon originalnetz = new ImageIcon("src/Media/Bilder/fischernetz.png");
+        ImageIcon originalIcontree = new ImageIcon("src/main/resources/Media/Bilder/tree.png");
+        ImageIcon Hintergrund = new ImageIcon("src/main/resources/Media/Bilder/background.png"); //Hintergrund von craftpix.net
+        ImageIcon originalGround = new ImageIcon("src/main/resources/Media/Bilder/ground.png");
+        ImageIcon originalrobbe = new ImageIcon("src/main/resources/Media/Bilder/robbe.png");
+        ImageIcon originalnetz = new ImageIcon("src/main/resources/Media/Bilder/fischernetz.png");
 
         this.setIconImage(originalPenguinOnGround.getImage());
 

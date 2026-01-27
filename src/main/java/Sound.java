@@ -22,7 +22,7 @@ public class Sound {
 
     public void starteMusik() {
         try {
-            File file = new File("src/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
+            File file = new File("src/main/resources/Media/Audio/513427__mrthenoronha__cartoon-game-theme-loop-3.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
@@ -40,7 +40,7 @@ public class Sound {
      */
     public void deadsound(){
         try {
-            File file = new File("src/Media/Audio/dead2.wav");
+            File file = new File("src/main/resources/Media/Audio/dead2.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             clip2 = AudioSystem.getClip();
             clip2.open(audioStream);
@@ -59,7 +59,7 @@ public class Sound {
      */
     public void jump(){
         try {
-            File file = new File("src/Media/Audio/jump2.wav");
+            File file = new File("src/main/resources/Media/Audio/jump2.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             clip3 = AudioSystem.getClip();
             clip3.open(audioStream);
