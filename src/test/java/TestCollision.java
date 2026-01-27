@@ -11,21 +11,21 @@ public class TestCollision {
 
     @BeforeEach
     void setUp() {
-        // Instanz des Spiels erstellen
+        // Instanz des Spiels erstellen vor test
         game = new AppWindow();
     }
 
     @Test
     void testCheckCollision_TrueWhenOverlapping() throws Exception {
-        // Wir holen uns die privaten Felder via Reflexion, um ihre Position zu setzen
+        // Labels via "Reflexionen"
         JLabel charakter = (JLabel) getPrivateField(game, "charakter");
         JLabel hinderniss = (JLabel) getPrivateField(game, "hinderniss");
 
-        // Pinguin und Hindernis auf exakt die gleiche Position setzen
+        //überlappen, also eig true
         charakter.setBounds(100, 300, 100, 100);
         hinderniss.setBounds(105, 305, 100, 100); // Überlappend
 
-        // Die private Methode 'checkCollision' aufrufen
+        // Die private Methode 'checkCollision' aufrufen über invoke
         boolean result = invokeCheckCollision(game);
 
         assertTrue(result, "Kollision sollte erkannt werden, wenn sich die Rects überschneiden.");
@@ -36,7 +36,7 @@ public class TestCollision {
         JLabel charakter = (JLabel) getPrivateField(game, "charakter");
         JLabel hinderniss = (JLabel) getPrivateField(game, "hinderniss");
 
-        // Weit voneinander entfernt positionieren
+        // auseinander
         charakter.setBounds(100, 300, 100, 100);
         hinderniss.setBounds(500, 300, 100, 100); // Weit rechts
 
@@ -45,7 +45,8 @@ public class TestCollision {
         assertFalse(result, "Kollision sollte nicht erkannt werden, wenn Hindernis weit weg ist.");
     }
 
-    // --- Helper Methoden für Reflexion (da Felder/Methoden in AppWindow private sind) ---
+    // Helper Methoden für Reflexion (da Felder/Methoden in AppWindow private sind)
+    // über invoke kann man drauf zu greifen, lest javadoc, kp, voll wild
 
     private Object getPrivateField(Object obj, String fieldName) throws Exception {
         var field = obj.getClass().getDeclaredField(fieldName);
