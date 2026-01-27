@@ -4,10 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.Random;
 import java.io.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Das Hauptfenster des Spiels "Pinguin Run".
@@ -21,37 +19,16 @@ import java.util.concurrent.TimeUnit;
 
 public class AppWindow extends JFrame {
 
-
-
-
-
-    //Sprites: Tobias //vllt echt auch mit nem extra Thread
-    //Objekte: Robert
-    //Kollision; Maik
-    //Punkte: Maik
-    //Menü:
-    //Hintergrund: Maik pixeln
-    //Highscore:
-    //Beleidigungen wenn man verkackt;
-    //Sounds:
-    //Tests:
-    //Javadoc:
-
-    //Optional
-    //Powerups:
-    //Methoden in extra Klasse, Code aufräumen
-
-
     /** Aktueller Punktestand des Spielers. */
     private int punkte = 0;
 
 
-    private JLabel score;
-    private JLabel charakter,hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
-    private JLabel hintergrund,hintergrund2,hintergrund3;
-    final private JLabel groundlabel,groundlabel2,groundlabel3;
-    private JButton resetbutton;
-    private  JButton startbutton;
+    private final JLabel score;
+    private final JLabel charakter,hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
+    private final JLabel hintergrund,hintergrund2,hintergrund3;
+    private final JLabel groundlabel,groundlabel2,groundlabel3;
+    private final JButton resetbutton;
+    private final JButton startbutton;
     GameLoop loop = new GameLoop(this);
 
 
@@ -79,7 +56,7 @@ public class AppWindow extends JFrame {
     private int obstacleSpeed = 500;
     final private Random random = new Random();
     /** Statusflag, ob das Spiel beendet ist */
-    private boolean GameOver = false, GameStart = false;
+    private boolean GameOver = false;
     /** Manager für die Audiowiedergabe (Musik und Soundeffekte). */
     Sound musikPlayer = new Sound();
 
@@ -190,7 +167,7 @@ public class AppWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 score.setForeground(Color.decode("#F5EADD"));
-
+                charakter.setIcon(penguinOnGround);
                 punkte = 0;
                 obstacleX = 1000;
                 obstacleSpeed = 500;
@@ -220,10 +197,12 @@ public class AppWindow extends JFrame {
                     Thread.sleep(500);
                 }
                 catch (InterruptedException exception) {
-                    System.err.println(exception );
+                    System.err.println(exception);
+
                 }
                 StarteGame();
                 AppWindow.this.requestFocusInWindow();
+
 
 
             }
@@ -289,7 +268,7 @@ public class AppWindow extends JFrame {
                         musikPlayer.jump();
                     }
                     yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
-                    System.out.println("yVel: " + yVelocity);
+                    // System.out.println("yVel: " + yVelocity);
 
                 }
             }
@@ -429,7 +408,7 @@ public class AppWindow extends JFrame {
         if(punkte>=10&& obstacleSpeed < maxSpeed)
         {
             obstacleSpeed = obstacleSpeed +10;
-            System.out.println("treeSpeed: " + obstacleSpeed);
+           // System.out.println("treeSpeed: " + obstacleSpeed);
         }
         if(obstacleSpeed >=1000){
             punkte+=random.nextInt(10,100);
