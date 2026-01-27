@@ -16,6 +16,9 @@ public class Sound {
     private Clip clip4;
 
 
+    /**
+     * Audiospur starten
+     */
 
     public void starteMusik() {
         try {
@@ -31,6 +34,10 @@ public class Sound {
             e.printStackTrace();
         }
     }
+
+    /**
+     *Todessound abspielen
+     */
     public void deadsound(){
         try {
             File file = new File("src/Media/Audio/dead2.wav");
@@ -45,19 +52,11 @@ public class Sound {
             System.err.println(e);
         }
     }
-    public void scoreup(){
-        try {
-            File file = new File("src/Media/Audio/scoreup2.wav");
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-            clip4 = AudioSystem.getClip();
-            clip4.open(audioStream);
-            clip4.start();
 
-        }
-        catch (Exception e){
-            System.err.println(e);
-        }
-    }
+
+    /**
+     * Den Pinguinjump Sound abspielen
+     */
     public void jump(){
         try {
             File file = new File("src/Media/Audio/jump2.wav");
@@ -71,7 +70,9 @@ public class Sound {
         }
     }
 
-
+    /**
+     * Nach einem Game Over die Musik stoppen
+     */
     public void stoppeMusik() {
         if (clip != null && clip.isRunning()) {
             clip.stop();

@@ -172,9 +172,9 @@ public class AppWindow extends JFrame {
         charakter.setBounds(100, yPos, 100, 100);
         hinderniss.setBounds(obstacleX, yPos, 100, 100);
         robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
-        hintergrund.setBounds(0, -100, getWidth(),getHeight());
-        hintergrund3.setBounds(0, -100, getWidth(),getHeight());
-        hintergrund2.setBounds(0, -100, getWidth(),getHeight());
+        hintergrund.setBounds(0, 0, getWidth(),getHeight());
+        hintergrund3.setBounds(0, 0, getWidth(),getHeight());
+        hintergrund2.setBounds(0, 0, getWidth(),getHeight());
 
         groundlabel.setBounds(0, -20, getWidth(),getHeight());
         groundlabel2.setBounds(0, -20, getWidth(),getHeight());
@@ -314,10 +314,11 @@ public class AppWindow extends JFrame {
      */
     private  void StarteGame(){
         startbutton.setVisible(false);
+
         loop.start();
     }
     private void gameOver(){
-
+        charakter.setIcon(penguinJump);
         resetbutton.setVisible(true);
         musikPlayer.deadsound();
 

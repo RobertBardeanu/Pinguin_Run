@@ -1,6 +1,6 @@
 /**
  * Game Loop Verwalter für konstante fps
- * @author Robert, Maik, Tobias ( eigentlich Lukas)
+ * @author Robert, Maik, Tobias
  * @version 1.0
  */
 public class GameLoop implements Runnable
@@ -19,7 +19,9 @@ public class GameLoop implements Runnable
         this.appWindowRef = appWindowRef;
     }
 
-
+    /**
+     * Gamerun Start
+     */
     public synchronized void start()
     {
         if (gameRunning) return;
@@ -30,6 +32,9 @@ public class GameLoop implements Runnable
 
     }
 
+    /**
+     * Stoppen
+     */
     public synchronized void stop()
     {
         gameRunning = false;
@@ -40,6 +45,9 @@ public class GameLoop implements Runnable
         catch (InterruptedException e) {}
     }
 
+    /**
+     * Fps Checker und konstant halten
+     */
     @Override
     public void run()
     {
@@ -86,6 +94,10 @@ public class GameLoop implements Runnable
         }
     }
 
+    /**
+     * App Window Updaten
+     * @param deltaTime
+     */
     public void updateAll(final double deltaTime)
     {
         //System.out.println("DT: " + deltaTime);
