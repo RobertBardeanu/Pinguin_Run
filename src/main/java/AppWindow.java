@@ -14,27 +14,28 @@ import java.io.*;
  * Kollisionsabfrage und den Punktestand.
  * </p>
  * * @author Robert, Maik, Tobias
+ *
  * @version 1.0
  */
 
 public class AppWindow extends JFrame {
 
-    /** Aktueller Punktestand des Spielers. */
+    /**
+     * Aktueller Punktestand des Spielers.
+     */
     private int punkte = 0;
 
 
     private final JLabel score;
-    private final JLabel charakter,hinderniss,robbenHinderniss,baumHinderniss,netzHinderniss;
-    private final JLabel hintergrund,hintergrund2,hintergrund3;
-    private final JLabel groundlabel,groundlabel2,groundlabel3;
+    private final JLabel charakter, hinderniss, robbenHinderniss, baumHinderniss, netzHinderniss;
+    private final JLabel hintergrund, hintergrund2, hintergrund3;
+    private final JLabel groundlabel, groundlabel2, groundlabel3;
     private final JButton resetbutton;
     private final JButton startbutton;
     GameLoop loop = new GameLoop(this);
 
 
-
-
-    final private ImageIcon penguinOnGround,penguinJump;
+    final private ImageIcon penguinOnGround, penguinJump;
 
     /** Y-Koordinate des Bodens, auf dem der Pinguin läuft */
     private final int GROUND_Y = 300;
@@ -74,7 +75,7 @@ public class AppWindow extends JFrame {
      * 6. Start des Game-Loops.
      */
 
-    AppWindow()  {
+    AppWindow() {
 
         // Fenster-Konfiguration
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,10 +84,6 @@ public class AppWindow extends JFrame {
         this.setLayout(null);
         this.getContentPane().setBackground(Color.white);
         this.setResizable(false);
-
-
-
-        //Musik initialisieren
 
 
         // Ressourcen-Management
@@ -118,52 +115,51 @@ public class AppWindow extends JFrame {
         ImageIcon hintergrundimage = new ImageIcon(scaledImageHintergrund);
 
         Image scaledImageGround = originalGround.getImage().getScaledInstance(1000, -200, Image.SCALE_SMOOTH);
-        ImageIcon ground=new ImageIcon(scaledImageGround);
+        ImageIcon ground = new ImageIcon(scaledImageGround);
 
         Image scaledImageRobbe = originalrobbe.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon Robbe=new ImageIcon(scaledImageRobbe);
+        ImageIcon Robbe = new ImageIcon(scaledImageRobbe);
 
         Image scaledImageNetz = originalnetz.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon Netz=new ImageIcon(scaledImageNetz);
+        ImageIcon Netz = new ImageIcon(scaledImageNetz);
 
         // UI-Komponenten
         // Initialisierung von Labels für Score, Charakter und Hindernisse
         charakter = new JLabel(penguinOnGround);
 
         hinderniss = new JLabel();
-        robbenHinderniss =new JLabel(Robbe);
-        baumHinderniss =new JLabel(tree);
-        netzHinderniss =new JLabel(Netz);
+        robbenHinderniss = new JLabel(Robbe);
+        baumHinderniss = new JLabel(tree);
+        netzHinderniss = new JLabel(Netz);
 
-        hintergrund=new JLabel(hintergrundimage);
-        hintergrund2=new JLabel(hintergrundimage);
-        hintergrund3=new JLabel(hintergrundimage);
+        hintergrund = new JLabel(hintergrundimage);
+        hintergrund2 = new JLabel(hintergrundimage);
+        hintergrund3 = new JLabel(hintergrundimage);
 
-        groundlabel=new JLabel(ground);
-        groundlabel2=new JLabel(ground);
-        groundlabel3=new JLabel(ground);
+        groundlabel = new JLabel(ground);
+        groundlabel2 = new JLabel(ground);
+        groundlabel3 = new JLabel(ground);
 
         score = new JLabel("");
 
 
         charakter.setBounds(100, yPos, 100, 100);
         hinderniss.setBounds(obstacleX, yPos, 100, 100);
-        robbenHinderniss.setBounds(obstacleX +10, yPos, 200, 200);
-        hintergrund.setBounds(0, 0, getWidth(),getHeight());
-        hintergrund3.setBounds(0, 0, getWidth(),getHeight());
-        hintergrund2.setBounds(0, 0, getWidth(),getHeight());
+        robbenHinderniss.setBounds(obstacleX + 10, yPos, 200, 200);
+        hintergrund.setBounds(0, 0, getWidth(), getHeight());
+        hintergrund3.setBounds(0, 0, getWidth(), getHeight());
+        hintergrund2.setBounds(0, 0, getWidth(), getHeight());
 
-        groundlabel.setBounds(0, -20, getWidth(),getHeight());
-        groundlabel2.setBounds(0, -20, getWidth(),getHeight());
-        groundlabel3.setBounds(0, -20, getWidth(),getHeight());
+        groundlabel.setBounds(0, -20, getWidth(), getHeight());
+        groundlabel2.setBounds(0, -20, getWidth(), getHeight());
+        groundlabel3.setBounds(0, -20, getWidth(), getHeight());
 
 
+        //Resetbutton und ActionListener zum Zurücksetzen
+        resetbutton = new JButton("Reset");
+        startbutton = new JButton("Start");
 
-        //Resetbutton und ActionListener zum zurücksetzen
-        resetbutton=new JButton("Reset");
-        startbutton=new JButton("Start");
-
-        resetbutton.addActionListener(new  ActionListener() {
+        resetbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 score.setForeground(Color.decode("#F5EADD"));
@@ -189,20 +185,18 @@ public class AppWindow extends JFrame {
 
             }
         });
-        startbutton.addActionListener(new  ActionListener()   {
+        startbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 musikPlayer.starteMusik();
                 try {
                     Thread.sleep(500);
-                }
-                catch (InterruptedException exception) {
+                } catch (InterruptedException exception) {
                     System.err.println(exception);
 
                 }
                 StarteGame();
                 AppWindow.this.requestFocusInWindow();
-
 
 
             }
@@ -227,7 +221,7 @@ public class AppWindow extends JFrame {
         startbutton.setVisible(true);
 
         //ScoreSchrift
-        score.setFont(new Font(Font.DIALOG,Font.BOLD,20));
+        score.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         score.setForeground(Color.decode("#F5EADD"));
 
 
@@ -264,10 +258,10 @@ public class AppWindow extends JFrame {
 
 
                 if ((e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) && yPos >= GROUND_Y) {
-                    if(!GameOver) {
+                    if (!GameOver) {
                         musikPlayer.jump();
                     }
-                    yVelocity = (int)-Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
+                    yVelocity = (int) -Math.round(Math.sqrt(JUMP_FORCE * -2.0 * GRAVITY)); // Kraftvoller Sprung nach oben
                     // System.out.println("yVel: " + yVelocity);
 
                 }
@@ -280,23 +274,20 @@ public class AppWindow extends JFrame {
         this.setVisible(true);
 
 
-
     }
-
-
-
 
 
     /**
      * Beendet das laufende Spiel, stoppt die Musik und löst den Game-Over-Sound aus.
      * Zeigt den Reset-Button an und prüft, ob der aktuelle Punktestand den Highscore bricht.
      */
-    private  void StarteGame(){
+    private void StarteGame() {
         startbutton.setVisible(false);
 
         loop.start();
     }
-    private void gameOver(){
+
+    private void gameOver() {
         charakter.setIcon(penguinJump);
         resetbutton.setVisible(true);
         musikPlayer.deadsound();
@@ -305,7 +296,7 @@ public class AppWindow extends JFrame {
         System.out.println("Kollision! Spiel vorbei. Score: " + punkte);
         musikPlayer.stoppeMusik();
 
-        try{
+        try {
             //funktionirt noch nicht richtig
             int gespeicherterScore = HighscoreManager.leseHighscore();
             if (punkte > gespeicherterScore) {
@@ -314,15 +305,16 @@ public class AppWindow extends JFrame {
             } else {
                 System.out.println("Kein neuer Highscore.");
             }
+        } catch (Exception e) {
         }
-        catch(Exception e){}
         score.setText("<html> Game Over :( <br> Score: " + punkte + "<br>" +
                 "Highscore: "
-                        + HighscoreManager.leseHighscore() +
-                        "</html>"
-        );        Dimension d= score.getPreferredSize();
+                + HighscoreManager.leseHighscore() +
+                "</html>"
+        );
+        Dimension d = score.getPreferredSize();
         score.setForeground(new Color(255, 255, 255));
-        score.setBounds(420 ,10, d.width,d.height);
+        score.setBounds(420, 10, d.width, d.height);
 
 
     }
@@ -331,13 +323,14 @@ public class AppWindow extends JFrame {
      * Aktualisiert die horizontale Position des Hindernisses.
      * Setzt das Hindernis zurück auf die Startposition, sobald es den linken Bildschirmrand
      * verlässt, und löst die Punktvergabe aus.
+     *
      * @param deltaTime Zeitdifferenz seit dem letzten Update zur Berechnung der Framerate-unabhängigen Bewegung.
      */
     private void updateObstacle(final double deltaTime) {
-        final int treeVel = (int)Math.round(obstacleSpeed * deltaTime);
+        final int treeVel = (int) Math.round(obstacleSpeed * deltaTime);
         obstacleX -= treeVel <= 0 ? 1 : treeVel; // Hindernis bewegt sich nach links
 
-        hinderniss.setLocation( obstacleX, GROUND_Y);
+        hinderniss.setLocation(obstacleX, GROUND_Y);
 
         if (obstacleX < -200) {
             obstacleX = getWidth();
@@ -350,16 +343,17 @@ public class AppWindow extends JFrame {
 
     /**
      * Berechnet die Bewegung des Hintergrunds, um einen Parallax-Effekt zu erzeugen.
+     *
      * @param deltaTime Zeitdifferenz seit dem letzten Update.
      */
 
     private void updateBackground(final double deltaTime) {
-        final int speed = (int)Math.round(100 * deltaTime);
+        final int speed = (int) Math.round(100 * deltaTime);
         BACKGROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
 
-        hintergrund.setLocation( BACKGROUND_X, 0);
-        hintergrund2.setLocation( BACKGROUND_X +getWidth(),0);
-        hintergrund3.setLocation( BACKGROUND_X -getWidth(),0);
+        hintergrund.setLocation(BACKGROUND_X, 0);
+        hintergrund2.setLocation(BACKGROUND_X + getWidth(), 0);
+        hintergrund3.setLocation(BACKGROUND_X - getWidth(), 0);
 
         if (BACKGROUND_X < -getWidth()) {
             BACKGROUND_X = getWidth();
@@ -368,16 +362,17 @@ public class AppWindow extends JFrame {
 
     /**
      * Bewegt die Bodentextur synchron zur Spielgeschwindigkeit, um eine realistische Laufanimation zu erzeugen
+     *
      * @param deltaTime Zeitdifferenz seit dem letzten Update.
      */
 
     private void updateGround(final double deltaTime) {
-        final int speed = (int)Math.round(obstacleSpeed * deltaTime);
+        final int speed = (int) Math.round(obstacleSpeed * deltaTime);
         GROUND_X -= speed <= 0 ? 1 : speed; // Hindernis bewegt sich nach links
 
-        groundlabel.setLocation( GROUND_X ,-20);
-        groundlabel2.setLocation( GROUND_X +getWidth(),-20);
-        groundlabel3.setLocation( GROUND_X -getWidth(),-20);
+        groundlabel.setLocation(GROUND_X, -20);
+        groundlabel2.setLocation(GROUND_X + getWidth(), -20);
+        groundlabel3.setLocation(GROUND_X - getWidth(), -20);
 
         if (GROUND_X < -getWidth()) {
             GROUND_X = getWidth();
@@ -386,6 +381,7 @@ public class AppWindow extends JFrame {
 
     /**
      * Wählt zufällig eines der verfügbaren Hindernis-Icons (Robbe, Baum oder Netz) aus.
+     *
      * @return Eines der ImageIcon für das nächste Hindernis.
      */
 
@@ -403,19 +399,17 @@ public class AppWindow extends JFrame {
      * Ab einer Geschwindigkeit von 1000 wird ein Bonus-Score vergeben.
      */
 
-    private void score(){
-        int maxSpeed = 2000     ;
-        if(punkte>=10&& obstacleSpeed < maxSpeed)
-        {
-            obstacleSpeed = obstacleSpeed +10;
-           // System.out.println("treeSpeed: " + obstacleSpeed);
+    private void score() {
+        int maxSpeed = 2000;
+        if (punkte >= 10 && obstacleSpeed < maxSpeed) {
+            obstacleSpeed = obstacleSpeed + 10;
+            // System.out.println("treeSpeed: " + obstacleSpeed);
         }
-        if(obstacleSpeed >=1000){
-            punkte+=random.nextInt(10,100);
+        if (obstacleSpeed >= 1000) {
+            punkte += random.nextInt(10, 100);
 
-        }
-        else{
-            punkte+=random.nextInt(1,10);
+        } else {
+            punkte += random.nextInt(1, 10);
         }
 
 
@@ -424,10 +418,11 @@ public class AppWindow extends JFrame {
     /**
      * Prüft auf eine Überschneidung der Hitboxen von Charakter und Hindernis.
      * Die Hitboxen werden leicht verkleinert ("grow"), um eine fairere Kollisionsabfrage zu ermöglichen.
+     *
      * @return true, wenn eine Kollision vorliegt, andernfalls false.
      */
 
-    private boolean checkCollision(){
+    private boolean checkCollision() {
         Rectangle pinguinRect = charakter.getBounds();
         Rectangle hindernisRect = hinderniss.getBounds();
 
@@ -443,6 +438,7 @@ public class AppWindow extends JFrame {
     /**
      * Berechnet die vertikale Bewegung des Charakters.
      * Bemerkt zudem ob der Charakter auf dem Boden oder im Sprung ist um eine Animation zu ermöglichen
+     *
      * @param deltaTime Zeitdifferenz seit dem letzten Update.
      */
 
@@ -450,7 +446,7 @@ public class AppWindow extends JFrame {
 
         //Sprung
         yVelocity += GRAVITY; // Schwerkraft wirkt ständig
-        yPos += (int)Math.round(yVelocity * deltaTime);    // Position ändern
+        yPos += (int) Math.round(yVelocity * deltaTime);    // Position ändern
 
         // Boden-Kollision (damit er nicht aus dem Bild fällt)
         if (yPos >= GROUND_Y) {      //>250, da Koordinatensystem in swing anders ist. Y verläuft nach unten. Oben links ist (0|0)
@@ -462,10 +458,8 @@ public class AppWindow extends JFrame {
 
         if (yPos >= GROUND_Y) {
             newState = Jump_States.ON_GROUND;
-        }
-        else {
+        } else {
             newState = Jump_States.JUMP;
-
 
 
         }
@@ -495,16 +489,13 @@ public class AppWindow extends JFrame {
     /**
      * Haupt-Update-Methode, die alle Teilbereiche (Physik, Hindernisse, Boden, Hintergrund)
      * aktualisiert, sofern das Spiel nicht pausiert oder beendet ist.
+     *
      * @param deltaTime Zeitdifferenz seit dem letzten Update.
      */
 
-    public void updateAll(final double deltaTime)
-    {
+    public void updateAll(final double deltaTime) {
 
-        if (GameOver) {
-            return;
-        }
-
+        if (GameOver) return;
 
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
@@ -512,20 +503,14 @@ public class AppWindow extends JFrame {
         updateBackground(deltaTime);
 
         score.setText("Score: " + punkte);
-        Dimension d= score.getPreferredSize();
-        int  center = 450;
-        score.setBounds(center, 10, d.width,d.height);
+        Dimension d = score.getPreferredSize();
+        int center = 450;
+        score.setBounds(center, 10, d.width, d.height);
 
-
-        if(checkCollision()){
-            gameOver();
-        }
+        if (checkCollision()) gameOver();
 
         this.repaint();
     }
-
-
-
 
 
     public static void main(String[] args) {
@@ -533,7 +518,6 @@ public class AppWindow extends JFrame {
         AppWindow window = new AppWindow();
 
     }
-
 
 
 }
