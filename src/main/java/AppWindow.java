@@ -495,7 +495,9 @@ public class AppWindow extends JFrame {
 
     public void updateAll(final double deltaTime) {
 
-        if (GameOver) return;
+        if (GameOver) {
+            return;
+        }
 
         updatePhysics(deltaTime);
         updateObstacle(deltaTime);
@@ -507,7 +509,9 @@ public class AppWindow extends JFrame {
         int center = 450;
         score.setBounds(center, 10, d.width, d.height);
 
-        if (checkCollision()) gameOver();
+        if (checkCollision()) {
+            gameOver();
+        }
 
         this.repaint();
     }
